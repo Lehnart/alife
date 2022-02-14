@@ -2,12 +2,32 @@ from time import sleep
 
 import pygame
 
+from cell import Cell
 from cell_array import CellArray
 from cell_rule import Rule
+from cell_state import CellState as cs
+
 
 window_surface = pygame.display.set_mode((700, 700))
 
-ca = CellArray(7, 7, 10, 10, Rule())
+pulser1 = [
+    [cs.U, cs.U, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0],
+    [cs.T_0_0_1, cs.T_0_0_0, cs.C_0_0, cs.T_0_0_0, cs.C_0_0, cs.T_0_0_0, cs.C_0_0]
+]
+
+pulser2 = [
+    [cs.U, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0, cs.T_0_0_0],
+    [cs.U, cs.T_0_1_0, cs.U, cs.T_0_1_0, cs.U, cs.C_0_0],
+    [cs.U, cs.T_0_1_0, cs.U, cs.T_0_1_0, cs.T_0_0_0, cs.T_0_1_0],
+    [cs.U, cs.T_0_1_0, cs.U, cs.T_0_1_0, cs.T_0_1_0, cs.T_0_2_0],
+    [cs.U, cs.T_0_1_0, cs.U, cs.T_0_1_0, cs.T_0_1_0, cs.T_0_2_0],
+    [cs.U, cs.T_0_1_0, cs.T_0_0_0, cs.T_0_1_0, cs.T_0_0_0, cs.T_0_1_0],
+    [cs.U, cs.T_0_1_0, cs.T_0_1_0, cs.T_0_2_0, cs.T_0_1_0, cs.T_0_2_0],
+    [cs.T_0_0_1, cs.C_0_0, cs.T_0_0_0, cs.C_0_0, cs.T_0_0_0, cs.C_0_0],
+]
+
+ca = CellArray(7, 7, 10, 10, Rule(), pulser1, (1,1))
+
 
 while True:
 

@@ -7,23 +7,18 @@ from cell_state import CellState
 
 class CellArray:
 
-    def __init__(self, cell_width, cell_height, n_row, n_col, rule):
+    def __init__(self, cell_width, cell_height, n_row, n_col, rule, cells, offset = (0,0)):
         self.cell_width = cell_width
         self.cell_height = cell_height
         self.n_row = n_row
         self.n_col = n_col
         self.rule = rule
-        self.cells = [[Cell(i * cell_width, j * cell_height, CellState.T_0_0_0) for i in range(n_col)] for j in range(n_row)]
+        self.cells = [[Cell(i * cell_width, j * cell_height, CellState.U) for i in range(n_col)] for j in range(n_row)]
 
-        for i in range(n_col):
-            self.cells[0][i] = Cell(i * cell_width, 0, CellState.T_0_3_1)
-            self.cells[n_row - 1][i] = Cell(i * cell_width, (n_row - 1) * cell_height, CellState.T_0_1_1)
-
-        for j in range(n_row):
-            self.cells[j][0] = Cell(0, j * cell_height, CellState.C_1_0)
-            self.cells[j][n_col - 1] = Cell((n_col - 1) * cell_width, j * cell_height, CellState.T_0_2_1)
-
-        self.cells[5][5] = Cell(5 * cell_width, 5 * cell_height, CellState.U)
+        x0, y0 = offset
+        for j in range(len(cells)):
+            for i in range(len(cells[j])):
+                self.cells[j+y0][i+x0] = Cell((i+x0) * cell_width, (j+y0) * cell_height, cells[j][i])
 
     def draw(self):
 

@@ -136,22 +136,30 @@ class BetaConfluentRule:
         if cn.tm.is_t_bot() \
                 and cn.tm.e() == 1 \
                 and cn.tm.u() == 0:
-            return CellState.U
+            if cn.mm.e_prime() == 1:
+                return CellState.C_1_1
+            return CellState.C_0_1
 
         if cn.ml.is_t_right() \
                 and cn.ml.e() == 1 \
                 and cn.ml.u() == 0:
-            return CellState.U
+            if cn.mm.e_prime() == 1 :
+                return CellState.C_1_1
+            return CellState.C_0_1
 
         if cn.bm.is_t_top() \
                 and cn.bm.e() == 1 \
                 and cn.bm.u() == 0:
-            return CellState.U
+            if cn.mm.e_prime() == 1 :
+                return CellState.C_1_1
+            return CellState.C_0_1
 
         if cn.mr.is_t_left() \
                 and cn.mr.e() == 1 \
                 and cn.mr.u() == 0:
-            return CellState.U
+            if cn.mm.e_prime() == 1 :
+                return CellState.C_1_1
+            return CellState.C_0_1
 
         return None
 
@@ -177,9 +185,9 @@ class ConfluentRule:
 
         c = cn.mm.unset_e()
         if c.e_prime() == 1:
-            return c.set_e()
+            return CellState.C_1_0
         else:
-            return c.unset_e()
+            return CellState.C_0_0
 
 
 class AlphaUnexcitableRule:
