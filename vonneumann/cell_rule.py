@@ -143,21 +143,21 @@ class BetaConfluentRule:
         if cn.ml.is_t_right() \
                 and cn.ml.e() == 1 \
                 and cn.ml.u() == 0:
-            if cn.mm.e_prime() == 1 :
+            if cn.mm.e_prime() == 1:
                 return CellState.C_1_1
             return CellState.C_0_1
 
         if cn.bm.is_t_top() \
                 and cn.bm.e() == 1 \
                 and cn.bm.u() == 0:
-            if cn.mm.e_prime() == 1 :
+            if cn.mm.e_prime() == 1:
                 return CellState.C_1_1
             return CellState.C_0_1
 
         if cn.mr.is_t_left() \
                 and cn.mr.e() == 1 \
                 and cn.mr.u() == 0:
-            if cn.mm.e_prime() == 1 :
+            if cn.mm.e_prime() == 1:
                 return CellState.C_1_1
             return CellState.C_0_1
 

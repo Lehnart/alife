@@ -7,7 +7,7 @@ from cell_state import CellState
 
 class CellArray:
 
-    def __init__(self, cell_width, cell_height, n_row, n_col, rule, cells, offset = (0,0)):
+    def __init__(self, cell_width, cell_height, n_row, n_col, rule, cells, offset=(0, 0)):
         self.cell_width = cell_width
         self.cell_height = cell_height
         self.n_row = n_row
@@ -18,7 +18,7 @@ class CellArray:
         x0, y0 = offset
         for j in range(len(cells)):
             for i in range(len(cells[j])):
-                self.cells[j+y0][i+x0] = Cell((i+x0) * cell_width, (j+y0) * cell_height, cells[j][i])
+                self.cells[j + y0][i + x0] = Cell((i + x0) * cell_width, (j + y0) * cell_height, cells[j][i])
 
     def draw(self):
 
