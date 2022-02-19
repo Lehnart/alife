@@ -1,19 +1,19 @@
 from typing import List, Tuple
 
-from langton.cell import Cell
-from langton.cell_neighborhood import CellNeighborhood
-from langton.cell_rule import CellRule
-from langton.cell_state import CellState
+from generic.cell import Cell
+from generic.cell_neighborhood import CellNeighborhood
+from generic.cell_rule import CellRule
 
 
 class CellArray:
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str, cell_state_class):
         self.array = []
+        self.cell_state_class = cell_state_class
         f = open(filename, "r")
         for line in f.readlines():
             line = line.strip()
-            row = [Cell(i, len(self.array), CellState(int(c))) for i, c in enumerate(line)]
+            row = [Cell(i, len(self.array), cell_state_class(int(c))) for i, c in enumerate(line)]
             self.array.append(row)
 
     def dimension(self) -> Tuple[int, int]:
@@ -24,7 +24,7 @@ class CellArray:
 
     def get_cell_state(self, x: int, y: int):
         if x < 0 or x >= len(self.array[0]) or y < 0 or y >= len(self.array):
-            return CellState(0)
+            return self.cell_state_class(0)
 
         return self.array[y][x].state
 

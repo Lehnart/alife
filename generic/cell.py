@@ -1,9 +1,6 @@
-from cell_state import CellState
-
-
 class Cell:
 
-    def __init__(self, x0: int, y0: int, state: CellState):
+    def __init__(self, x0: int, y0: int, state):
         self.x0 = x0
         self.y0 = y0
         self.state = state

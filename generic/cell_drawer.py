@@ -3,14 +3,14 @@ from typing import Tuple
 
 import pygame
 
-from langton.cell_array import CellArray
+from generic.cell_array import CellArray
 
 STATE_COLORS = [
     (0, 0, 0),
     (128, 0, 0),
     (0, 128, 0),
     (0, 0, 128),
-    (0, 0, 0),
+    (128, 0, 128),
     (128, 128, 0),
     (0, 128, 128),
     (128, 128, 128)
@@ -47,5 +47,5 @@ class CellDrawer:
         )
 
         self.window_surface.blit(cell_surf, (0, 0))
-        sleep(0.)
+        sleep(0.025)
         pygame.display.flip()

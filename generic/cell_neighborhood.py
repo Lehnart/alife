@@ -1,9 +1,6 @@
-from langton.cell_state import CellState
-
-
 class CellNeighborhood:
 
-    def __init__(self, m: CellState, t: CellState, r: CellState, b: CellState, l: CellState):
+    def __init__(self, m, t, r, b, l):
         self.m = m
         self.t = t
         self.r = r
