@@ -1,7 +1,6 @@
 #include <stdlib.h>
-#include <time.h>
+#include <stdio.h>
 #include "spiral_rule.h"
-#include "cell_neighborhood.h"
 
 int apply(const SpiralRule * pRule, const CellNeighborhood *pN){
 

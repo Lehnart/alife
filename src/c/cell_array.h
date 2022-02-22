@@ -12,7 +12,7 @@ typedef struct {
 } CellArray;
 
 int get(const CellArray* ca, int x, int y);
-
+CellNeighborhood get_neighborhood(CellArray* pCA, int x, int y);
 CellArray * random_cell_array(int w, int h, const int * states, const double * cumulative_prob);
 CellArray * cell_array(int w, int h);
 

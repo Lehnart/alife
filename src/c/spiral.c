@@ -2,10 +2,11 @@
 #include <time.h>
 
 #include <SDL2/SDL.h>
+#include <stdlib.h>
 #include "cell_array.h"
 
-#define W 300
-#define H 300
+#define W 500
+#define H 500
 #define STATE_COUNT 6
 
 SDL_Window* create_window(char* title, int w, int h){
@@ -28,7 +29,7 @@ SDL_Window* create_window(char* title, int w, int h){
 }
 
 int main() {
-
+    srand(time(NULL));
     printf("Hello World!");
 
     SDL_Window *p_window = create_window("Test", W, H);
@@ -48,7 +49,7 @@ int main() {
     int catalytic_states[STATE_COUNT] = {-1,2,3,4,5,1};
     float probas[STATE_COUNT] = {0.f,0.f,0.f,0.f,0.f,0.f};
     SpiralRule rule = {
-            0.15f,
+            0.10f,
             11.f,
             1.f,
             100.f,
@@ -69,12 +70,30 @@ int main() {
         for(i = 0; i < W; i++)
         {
             for(j = 0; j < H; j++) {
+
+                int state_count[STATE_COUNT] = {0,0,0,0,0,0};
+                CellNeighborhood cn = get_neighborhood(ca, i, j);
+                for(int index =0; index < 9; index++){
+                    int s = cn.states[index];
+                    state_count[s]++;
+                }
+                int max = 0;
+                int s_max = -1;
+
+                for(int index =0; index < 6; index++){
+                    if (state_count[index] > max ){
+
+                        max = state_count[index];
+                        s_max = index;
+                    }
+                }
+
                 int s = ca->array[i + (j * W)];
-                pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s], g[s], b[s], 255);
+                pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s_max], g[s_max], b[s_max], 255);
             }
         }
         SDL_UnlockSurface(p_surf);
-        SDL_Delay(50 - (SDL_GetTicks() - ticks));
+        //SDL_Delay(50 - (SDL_GetTicks() - ticks));
         ticks = SDL_GetTicks();
         SDL_UpdateWindowSurface(p_window);
     }

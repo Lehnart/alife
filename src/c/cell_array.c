@@ -32,7 +32,6 @@ CellArray * random_cell_array(int w, int h, const int * states, const double * c
     p_cell_array->array=p_array;
     p_cell_array->iarray=p_iarray;
 
-    srand(time(NULL));
     for(int y = 0; y < h; y++){
         for(int x = 0; x < w; x++){
             double r = ( (double) rand() ) / ( (double) RAND_MAX );
@@ -59,7 +58,6 @@ CellArray * cell_array(int w, int h){
     p_cell_array->array=p_array;
     p_cell_array->iarray=p_iarray;
 
-    srand(time(NULL));
     for(int y = 0; y < h; y++){
         for(int x = 0; x < w; x++){
             p_array[x+(w*y)] = 0;
@@ -69,22 +67,27 @@ CellArray * cell_array(int w, int h){
     return p_cell_array;
 }
 
+CellNeighborhood get_neighborhood(CellArray* pCA, int x, int y){
+    CellNeighborhood cn;
+    cn.m = get(pCA, x, y);
+    cn.t = get(pCA, x, y - 1);
+    cn.b = get(pCA, x, y + 1);
+    cn.r = get(pCA, x + 1, y);
+    cn.l = get(pCA, x - 1, y);
+    cn.tl = get(pCA, x - 1, y - 1);
+    cn.tr = get(pCA, x + 1, y - 1);
+    cn.bl = get(pCA, x - 1, y + 1);
+    cn.br = get(pCA, x + 1, y + 1);
+
+    return cn;
+}
+
 void evolve(CellArray* pCA, const SpiralRule* pRule) {
 
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
 
-            CellNeighborhood cn;
-            cn.m = get(pCA, x, y);
-            cn.t = get(pCA, x, y - 1);
-            cn.b = get(pCA, x, y + 1);
-            cn.r = get(pCA, x + 1, y);
-            cn.l = get(pCA, x - 1, y);
-            cn.tl = get(pCA, x - 1, y - 1);
-            cn.tr = get(pCA, x + 1, y - 1);
-            cn.bl = get(pCA, x - 1, y + 1);
-            cn.br = get(pCA, x + 1, y + 1);
-
+            CellNeighborhood cn = get_neighborhood(pCA, x, y);
             pCA->iarray[x + (pCA->w * y)] = apply(pRule, &cn);
         }
     }
