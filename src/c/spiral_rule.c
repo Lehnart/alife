@@ -6,7 +6,7 @@ int apply(const SpiralRule * pRule, const CellNeighborhood *pN){
 
     int m = pN->m;
     if (m != 0){
-        double r = ((double) rand())/ ((double) RAND_MAX);
+        double r = (double)rand()/RAND_MAX;
         if (r < pRule->decay_proba){
             return 0;
         }

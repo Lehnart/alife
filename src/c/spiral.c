@@ -9,7 +9,7 @@
 #define H 800
 #define STATE_COUNT 6
 
-SDL_Window* create_window(char* title, int w, int h){
+SDL_Window* create_window(const char* title, int w, int h){
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -58,7 +58,7 @@ int main() {
             probas
     };
 
-    int ticks = SDL_GetTicks();
+    //int ticks = SDL_GetTicks();
 
     while(1){
         evolve(ca, &rule);
@@ -66,21 +66,21 @@ int main() {
         size_t i, j;
 
         SDL_LockSurface(p_surf);
-        pixels = p_surf->pixels;
+        pixels = (Uint32*) p_surf->pixels;
         for(i = 0; i < W; i++)
         {
             for(j = 0; j < H; j++) {
 
                 int state_count[STATE_COUNT] = {0,0,0,0,0,0};
                 CellNeighborhood cn = get_neighborhood(ca, i, j);
-                for(int index =0; index < 9; index++){
+                for(int index = 0; index < 9; index++){
                     int s = cn.states[index];
                     state_count[s]++;
                 }
                 int max = 0;
                 int s_max = -1;
 
-                for(int index =0; index < 6; index++){
+                for(int index = 0; index < STATE_COUNT; index++){
                     if (state_count[index] > max ){
 
                         max = state_count[index];
@@ -88,13 +88,13 @@ int main() {
                     }
                 }
 
-                int s = ca->array[i + (j * W)];
+                //int s = ca->array[i + (j * W)];
                 pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s_max], g[s_max], b[s_max], 255);
             }
         }
         SDL_UnlockSurface(p_surf);
         //SDL_Delay(50 - (SDL_GetTicks() - ticks));
-        ticks = SDL_GetTicks();
+        //ticks = SDL_GetTicks();
         SDL_UpdateWindowSurface(p_window);
     }
 

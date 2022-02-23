@@ -23,10 +23,10 @@ void set(CellArray* ca, int x, int y, int s){
 
 CellArray * random_cell_array(int w, int h, const int * states, const double * cumulative_prob){
 
-    int* p_array = malloc(sizeof(int) * (w*h) );
-    int* p_iarray = malloc(sizeof(int) * (w*h) );
+    int* p_array = (int*)malloc(sizeof(int) * (w*h) );
+    int* p_iarray = (int*)malloc(sizeof(int) * (w*h) );
 
-    CellArray * p_cell_array = malloc(sizeof(CellArray));
+    CellArray * p_cell_array = (CellArray*)malloc(sizeof(CellArray));
     p_cell_array->w=w;
     p_cell_array->h=h;
     p_cell_array->array=p_array;
@@ -49,10 +49,10 @@ CellArray * random_cell_array(int w, int h, const int * states, const double * c
 
 CellArray * cell_array(int w, int h){
 
-    int* p_array = malloc(sizeof(int) * (w*h) );
-    int* p_iarray = malloc(sizeof(int) * (w*h) );
+    int* p_array = (int*)malloc(sizeof(int) * (w*h) );
+    int* p_iarray = (int*)malloc(sizeof(int) * (w*h) );
 
-    CellArray * p_cell_array = malloc(sizeof(CellArray));
+    CellArray * p_cell_array = (CellArray*)malloc(sizeof(CellArray));
     p_cell_array->w=w;
     p_cell_array->h=h;
     p_cell_array->array=p_array;
