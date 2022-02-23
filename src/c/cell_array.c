@@ -1,9 +1,5 @@
-#include <malloc.h>
 #include <stdlib.h>
-#include <time.h>
 #include "cell_array.h"
-#include "spiral_rule.h"
-#include "cell_neighborhood.h"
 
 int get(const CellArray* ca, int x, int y){
     if (x<0) x = ca->w + x;

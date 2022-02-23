@@ -8,6 +8,7 @@
 #define W 800
 #define H 800
 #define STATE_COUNT 6
+#define FRAME_DELAY_MS 50
 
 SDL_Window* create_window(const char* title, int w, int h){
 
@@ -30,9 +31,8 @@ SDL_Window* create_window(const char* title, int w, int h){
 
 int main() {
     srand(time(NULL));
-    printf("Hello World!");
 
-    SDL_Window *p_window = create_window("Test", W, H);
+    SDL_Window *p_window = create_window("Spiral", W, H);
     SDL_Surface *p_surf = SDL_GetWindowSurface(p_window);
 
     if (p_window == NULL) { return 1; }
@@ -58,12 +58,23 @@ int main() {
             probas
     };
 
-    //int ticks = SDL_GetTicks();
+    Uint32 ticks = SDL_GetTicks();
+    int is_over = 1;
 
-    while(1){
+    while(is_over){
+
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            SDL_PollEvent(&e);
+            if (e.type == SDL_QUIT) {
+                is_over = 0;
+            }
+        }
+
+
         evolve(ca, &rule);
         Uint32 *pixels;
-        size_t i, j;
+        int i, j;
 
         SDL_LockSurface(p_surf);
         pixels = (Uint32*) p_surf->pixels;
@@ -87,15 +98,16 @@ int main() {
                         s_max = index;
                     }
                 }
-
-                //int s = ca->array[i + (j * W)];
                 pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s_max], g[s_max], b[s_max], 255);
             }
         }
         SDL_UnlockSurface(p_surf);
-        //SDL_Delay(50 - (SDL_GetTicks() - ticks));
-        //ticks = SDL_GetTicks();
         SDL_UpdateWindowSurface(p_window);
+        Uint32 delay =  (SDL_GetTicks() - ticks);
+        if(delay < FRAME_DELAY_MS){
+            SDL_Delay(FRAME_DELAY_MS - delay);
+        }
+        ticks = SDL_GetTicks();
     }
 
     SDL_DestroyWindow(p_window);

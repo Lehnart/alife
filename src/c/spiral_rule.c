@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "spiral_rule.h"
 
 int apply(const SpiralRule * pRule, const CellNeighborhood *pN){
