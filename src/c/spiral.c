@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "cell_array.h"
 
-#define W 500
-#define H 500
+#define W 800
+#define H 800
 #define STATE_COUNT 6
 
 SDL_Window* create_window(char* title, int w, int h){
