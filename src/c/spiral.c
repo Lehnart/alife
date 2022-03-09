@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include "cell_array.h"
+#include "spiral_rule.h"
 
 #define W 800
 #define H 800

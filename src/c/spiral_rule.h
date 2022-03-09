@@ -2,6 +2,7 @@
 #define ALIFE_SPIRAL_RULE_H
 
 #include "cell_neighborhood.h"
+#include "cell_array.h"
 
 typedef struct{
     float decay_proba;
@@ -17,5 +18,6 @@ typedef struct{
 
 
 int apply(const SpiralRule * pRule, const CellNeighborhood *pN);
+void evolve(CellArray* pCA, const SpiralRule* pRule);
 
 #endif //ALIFE_SPIRAL_RULE_H

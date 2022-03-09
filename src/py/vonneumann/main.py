@@ -37,8 +37,6 @@ while True:
     window_surface.blit(cell_surf, (0, 0))
 
     sleep(1)
-    print("next")
-
     pygame.display.flip()
 
     ca.evolve()
