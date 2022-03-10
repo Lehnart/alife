@@ -1,63 +1,81 @@
 #include <stdlib.h>
 #include "ipd_rule.h"
 
-int apply(const IPDRule * pRule, const CellNeighborhood *pN){
-
-    int m = pN->m;
-    if (m != 0){
-        double r = (double)rand()/RAND_MAX;
-        if (r < pRule->decay_proba){
-            return 0;
-        }
-        return m;
+float score(const IPDRule *pRule, int s, int os) {
+    if (s == 0 && os == 0) {
+        return pRule->P;
     }
-
-    float * ps = pRule->catalytic_probas;
-    int   * cs = pRule->catalytic_states;
-
-    for(int i=0; i<pRule->state_count; i++){
-        ps[i]=0.f;
+    if (s == 1 && os == 1) {
+        return pRule->R;
     }
-    ps[0]=pRule->claim_empty;
-
-    ps[pN->t] += pRule->claim_cell;
-    if (cs[pN->t] == pN->tl) ps[pN->t] += pRule->claim_hyper;
-    if (cs[pN->t] == pN->tr) ps[pN->t] += pRule->claim_hyper;
-    if (cs[pN->t] == pN->l)  ps[pN->t] += pRule->claim_hyper;
-    if (cs[pN->t] == pN->r)  ps[pN->t] += pRule->claim_hyper;
-
-    ps[pN->l] += pRule->claim_cell;
-    if (cs[pN->l] == pN->tl) ps[pN->l] += pRule->claim_hyper;
-    if (cs[pN->l] == pN->bl) ps[pN->l] += pRule->claim_hyper;
-    if (cs[pN->l] == pN->t)  ps[pN->l] += pRule->claim_hyper;
-    if (cs[pN->l] == pN->b)  ps[pN->l] += pRule->claim_hyper;
-
-    ps[pN->b] += pRule->claim_cell;
-    if (cs[pN->b] == pN->l)   ps[pN->b] += pRule->claim_hyper;
-    if (cs[pN->b] == pN->r)   ps[pN->b] += pRule->claim_hyper;
-    if (cs[pN->b] == pN->bl)  ps[pN->b] += pRule->claim_hyper;
-    if (cs[pN->b] == pN->br)  ps[pN->b] += pRule->claim_hyper;
-
-    ps[pN->r] += pRule->claim_cell;
-    if (cs[pN->r] == pN->br)   ps[pN->r] += pRule->claim_hyper;
-    if (cs[pN->r] == pN->tr)   ps[pN->r] += pRule->claim_hyper;
-    if (cs[pN->r] == pN->t)    ps[pN->r] += pRule->claim_hyper;
-    if (cs[pN->r] == pN->b)    ps[pN->r] += pRule->claim_hyper;
-
-    float sum = 0.f;
-    for (int i = 0; i < pRule->state_count; i++) sum += ps[i];
-
-    ps[0] = ps[0] / sum;
-    for (int i = 1; i < pRule->state_count; i++) ps[i] = ps[i-1]+(ps[i]/sum);
-
-    double r = ((double) rand())/ ((double) RAND_MAX);
-    int index = 0;
-    while (r > ps[index]){
-        index++;
+    if (s == 1 && os == 0) {
+        return pRule->S;
     }
-    return index;
+    return pRule->T;
 }
 
-void evolve(CellArray* pCA, const IPDRule* pRule) {
+float evaluate(const IPDRule *pRule, const CellNeighborhood *pN) {
+    float sum = 0.f;
+    for (int i = 0; i < pRule->try_count; i++) {
+        sum += score(pRule, pN->m, pN->t);
+        sum += score(pRule, pN->m, pN->l);
+        sum += score(pRule, pN->m, pN->r);
+        sum += score(pRule, pN->m, pN->b);
+    }
+    sum /= 4.f;
+    sum /= (float) pRule->try_count;
+    return sum;
+}
 
+void evolve(CellArray *pCA, const IPDRule *pRule) {
+    float *intermediate_array = malloc(pCA->w * pCA->h * sizeof(float));
+    for (int y = 0; y < pCA->h; y++) {
+        for (int x = 0; x < pCA->w; x++) {
+            CellNeighborhood cn = get_neighborhood(pCA, x, y);
+            intermediate_array[x + (pCA->w * y)] = evaluate(pRule, &cn);
+        }
+    }
+
+    for (int y = 0; y < pCA->h; y++) {
+        for (int x = 0; x < pCA->w; x++) {
+            int t = get(pCA, x, y - 1);
+            float ts = intermediate_array[get_index(pCA, x, y - 1)];
+
+            int b = get(pCA, x, y + 1);
+            float bs = intermediate_array[get_index(pCA, x, y +1)];
+
+            int l = get(pCA, x - 1, y);
+            float ls = intermediate_array[get_index(pCA, x-1, y)];
+
+            int r = get(pCA, x + 1, y);
+            float rs = intermediate_array[get_index(pCA, x+1, y)];
+
+            int m = get(pCA, x, y);
+            float ms = intermediate_array[get_index(pCA, x, y)];
+
+            float max = -1.f;
+            int max_state = -1;
+            if (ts > max) {
+                max_state = t;
+                max = ts;
+            }
+            if (bs > max) {
+                max_state = b;
+                max = bs;
+            }
+            if (rs > max) {
+                max_state = r;
+                max = rs;
+            }
+            if (ls > max) {
+                max_state = l;
+                max = ls;
+            }
+            if (ms > max) {
+                max_state = m;
+            }
+            set(pCA, x, y, max_state);
+        }
+    }
+   free(intermediate_array);
 }

@@ -64,7 +64,6 @@ void evolve(CellArray* pCA, const SpiralRule* pRule) {
 
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
-
             CellNeighborhood cn = get_neighborhood(pCA, x, y);
             intermediate_array[x + (pCA->w * y)] = apply(pRule, &cn);
         }

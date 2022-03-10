@@ -9,6 +9,7 @@ typedef struct {
     int*    array;
 } CellArray;
 
+int get_index(const CellArray* ca, int x, int y);
 int get(const CellArray* ca, int x, int y);
 void set(CellArray* ca, int x, int y, int s);
 

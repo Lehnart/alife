@@ -13,7 +13,10 @@ typedef struct{
     float P;
     float S;
     float T;
+
+    int try_count;
 } IPDRule;
+
 
 int apply(const IPDRule * pRule, const CellNeighborhood *pN);
 void evolve(CellArray* pCA, const IPDRule* pRule);
