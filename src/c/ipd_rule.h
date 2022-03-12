@@ -2,12 +2,11 @@
 #define ALIFE_IPD_RULE_H
 
 #include "cell_array.h"
+#include "ipd_state.h"
 
 typedef struct{
     float error_proba;
     float mut_proba;
-    float dupl_proba;
-    float split_proba;
 
     float R;
     float P;
@@ -15,10 +14,19 @@ typedef struct{
     float T;
 
     int try_count;
+    int memory_size;
+    int state_count;
+
 } IPDRule;
 
 
-int apply(const IPDRule * pRule, const CellNeighborhood *pN);
+typedef struct{
+    const IPDRule* pRule;
+    IPDStateCodes* pCodes;
+    int *p1_memory;
+    int *p2_memory;
+} IPDGame;
+
 void evolve(CellArray* pCA, const IPDRule* pRule);
 
 #endif //ALIFE_IPD_RULE_H

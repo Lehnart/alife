@@ -6,9 +6,10 @@
 #include "cell_array.h"
 #include "ipd_rule.h"
 
-#define W 400
-#define H 400
-#define STATE_COUNT 2
+#define W 256
+#define H 256
+
+#define STATE_COUNT 16
 #define FRAME_DELAY_MS 50
 
 SDL_Window* create_window(const char* title, int w, int h){
@@ -38,31 +39,38 @@ int main() {
 
     if (p_window == NULL) { return 1; }
 
-    int states[STATE_COUNT] = {0, 1};
-    double cumulative_probas[STATE_COUNT] = {0.5, 1.};
+    int states[STATE_COUNT];
+    double cumulative_probas[STATE_COUNT];//= {0.25,0.5,0.75,1.,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1.0};
+    for(int i=0; i<STATE_COUNT; i++){
+        cumulative_probas[i] = (double)(i+1) / (double)STATE_COUNT;
+        states[i] = i;
+    }
     CellArray *ca = random_cell_array(W, H, states, cumulative_probas);
 
-    int r[STATE_COUNT] = {0,192};
-    int g[STATE_COUNT] = {0,192};
-    int b[STATE_COUNT] = {0,192};
+    int r[STATE_COUNT] = {192  ,  0,192,  0,192,  0,192, 64,192,192, 64,192, 64, 64,128,  0};
+    int g[STATE_COUNT] = {192  ,  0,  0,192,192,192,192,192, 64,192, 64, 64,192, 64,  0,  0};
+    int b[STATE_COUNT] = {192  ,192,  0,  0,  0,192,  0,192,192, 64,192, 64, 64, 64,  0,128};
     IPDRule rule = {
-        0.5f,
-        0.5f,
-        0.5f,
-        0.5f,
+        0.01f,
+        0.02f,
 
         1.f,
         0.333f,
         0.f,
         1.666f,
 
-        10
+        100,
+        2,
+        STATE_COUNT
     };
 
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
-
+    int generation = 0;
     while(is_over){
+
+        printf("Generation %i\n", generation);
+        generation += 1;
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
