@@ -4,7 +4,7 @@
 #include "tools.h"
 
 
-void add_to_memory(int *memory, int memory_size, int my_move, int p2_move) {
+void add_to_memory(int *memory, int my_move, int p2_move) {
 //    int temp;
 //    for (int i = 0; i < memory_size; i++) {
 //        temp = memory[i];
@@ -19,15 +19,16 @@ void add_to_memory(int *memory, int memory_size, int my_move, int p2_move) {
 //        }
 //    }
 
-    memory[0] = my_move + (p2_move << 1);
+    memory[0] = my_move;
+    memory[1] = p2_move;
 }
 
 int get_move(const IPDGame * pGame, const int *memory, int memory_size, int state) {
 
-    int move_index = memory[0];
+    int move_index = (memory[0]<<1) + memory[1];
     int move = pGame->pCodes->state_to_code[state].mem_to_move[move_index];
 
-    if (random() < pGame->pRule->error_proba){
+    if (rand_double() < pGame->pRule->error_proba){
         move++;
         move %= 2;
     }
@@ -52,16 +53,16 @@ float play(const IPDGame *pGame, int p1_state, int p2_state) {
     int memory_size = pGame->pRule->memory_size;
 
     for (int i = 0; i < pGame->pRule->memory_size; i++) {
-        pGame->p1_memory[i] = (int) (randlong() % 2);
-        pGame->p2_memory[i] = (int) (randlong() % 2);
+        pGame->p1_memory[i] = (int) (rand_long() % 2);
+        pGame->p2_memory[i] = (int) (rand_long() % 2);
     }
 
     float score_sum = 0.f;
     for (int i = 0; i < pGame->pRule->try_count; i++) {
         int p1_move = get_move(pGame, pGame->p1_memory, memory_size, p1_state);
         int p2_move = get_move(pGame, pGame->p2_memory, memory_size, p2_state);
-        add_to_memory(pGame->p1_memory, memory_size, p1_move, p2_move);
-        add_to_memory(pGame->p2_memory, memory_size, p2_move, p1_move);
+        add_to_memory(pGame->p1_memory, p1_move, p2_move);
+        add_to_memory(pGame->p2_memory, p2_move, p1_move);
         score_sum += score(pGame->pRule, p1_move, p2_move);
     }
 
@@ -141,8 +142,8 @@ void evolve(CellArray *pCA, const IPDRule *pRule) {
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
 
-            if ( random() < pRule->mut_proba) {
-                set(pCA, x, y, next_array[randlong() % pRule->state_count]);
+            if (rand_double() < pRule->mut_proba) {
+                set(pCA, x, y, (int) (rand_long() % pRule->state_count));
             } else {
                 set(pCA, x, y, next_array[get_index(pCA, x, y)]);
             }

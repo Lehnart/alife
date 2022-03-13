@@ -12,7 +12,7 @@ IPDStateCodes* create(int memory_size, int state_count){
 
         int state_reminder = state;
         for(int i = move_size; i>1; i--){
-            if (state_reminder > get_pow(2,i-1)) {
+            if (state_reminder >= get_pow(2,i-1)) {
                 moves[i-1] = 1;
                 state_reminder -= get_pow(2,i-1);
             }
