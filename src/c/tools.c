@@ -21,9 +21,9 @@ unsigned long rand_long(void) {
     return z;
 }
 
-int get_pow(int value, int exponant){
+int get_pow(int value, int exponent){
     int result = 1;
-    for(int i = 0; i < exponant; i++){
+    for(int i = 0; i < exponent; i++){
         result *= value;
     }
     return result;

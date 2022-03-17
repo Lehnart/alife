@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-int get_pow(int value, int exponant);
+int get_pow(int value, int exponent);
 
 double rand_double(void);
 unsigned long rand_long(void);
