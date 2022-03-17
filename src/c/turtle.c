@@ -70,23 +70,30 @@ void turtle_set_pixels(TurtlePainter *turtle_painter, Uint32* pixels, int width,
 
 TurtlePainter * turtle_new(Uint32* pixels, int width, int height, SDL_PixelFormat* format) {
     Turtle *turtle = malloc(sizeof(Turtle));
-    Turtle *backup_turtle = malloc(sizeof(Turtle));
+    turtle_reset(turtle);
+    Turtle** backup_turtles = malloc(TURTLE_BACKUP_SIZE*sizeof(Turtle*));
+    for(int i =0; i<TURTLE_BACKUP_SIZE; i++){
+        backup_turtles[i] = malloc(sizeof(Turtle));
+        turtle_reset(backup_turtles[i]);
+    }
+
     TurtlePainter *turtle_painter = malloc(sizeof(TurtlePainter));
 
     turtle_painter->turtle = turtle;
-    turtle_painter->backup_turtle = backup_turtle;
+    turtle_painter->backup_turtles = backup_turtles;
+    turtle_painter->backup_turtle_index = -1;
 
     turtle_set_pixels(turtle_painter, pixels, width, height, format);
-
-    turtle_reset(turtle);
-    turtle_reset(backup_turtle);
 
     return turtle_painter;
 }
 
 void turtle_delete(TurtlePainter *turtle_painter) {
     free(turtle_painter->turtle);
-    free(turtle_painter->backup_turtle);
+    for(int i =0; i<TURTLE_BACKUP_SIZE; i++){
+        free(turtle_painter->backup_turtles[i]);
+    }
+    free(turtle_painter->backup_turtles);
     free(turtle_painter);
 }
 
@@ -102,11 +109,20 @@ void turtle_reset(Turtle *turtle) {
 }
 
 void turtle_backup(TurtlePainter *turtle_painter) {
-    *(turtle_painter->backup_turtle) = *(turtle_painter->turtle);
+    Turtle * backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index+1];
+    *(backup) = *(turtle_painter->turtle);
+
+    turtle_painter->backup_turtle_index++;
 }
 
 void turtle_restore(TurtlePainter *turtle_painter) {
-    *(turtle_painter->turtle) = *(turtle_painter->backup_turtle);
+    if(turtle_painter->backup_turtle_index == -1){
+        return;
+    }
+    Turtle * backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index];
+    *(turtle_painter->turtle) = *(backup);
+
+    turtle_painter->backup_turtle_index--;
 }
 
 void turtle_forward(TurtlePainter *turtle_painter, int pixels) {

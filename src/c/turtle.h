@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#define TURTLE_BACKUP_SIZE 100
+
 typedef struct {
     unsigned char red;
     unsigned char green;
@@ -27,7 +29,8 @@ typedef struct {
     SDL_PixelFormat *format;
 
     Turtle* turtle;
-    Turtle* backup_turtle;
+    Turtle** backup_turtles;
+    int backup_turtle_index;
 } TurtlePainter;
 
 
