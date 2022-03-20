@@ -1,6 +1,6 @@
 #include <malloc.h>
 #include "ipd_state.h"
-#include "tools.h"
+#include "../tools.h"
 
 IPDStateCodes* create(int memory_size, int state_count){
     int move_size = get_pow(2, memory_size);

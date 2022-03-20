@@ -3,9 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <stdlib.h>
-#include "cell_array.h"
+#include "../cell_array.h"
 #include "ipd_rule.h"
-#include "tools.h"
+#include "../tools.h"
 
 #define WINDOW_W 400
 #define WINDOW_H 300

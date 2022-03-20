@@ -1,7 +1,7 @@
 #ifndef ALIFE_IPD_RULE_H
 #define ALIFE_IPD_RULE_H
 
-#include "cell_array.h"
+#include "../cell_array.h"
 #include "ipd_state.h"
 
 typedef struct{

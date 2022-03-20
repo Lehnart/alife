@@ -1,7 +1,7 @@
 #include <limits.h>
 #include <malloc.h>
 #include "ipd_rule.h"
-#include "tools.h"
+#include "../tools.h"
 
 
 void add_to_memory(int *memory, int my_move, int p2_move) {
