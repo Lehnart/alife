@@ -1,9 +1,8 @@
 
-#include <stddef.h>
-#include <stdio.h>
 #include "../array.h"
 #include "../graph.h"
 #include "../neural_network.h"
+#include "world.h"
 
 int main() {
     int layers[3] = {3, 3, 3};
@@ -18,6 +17,8 @@ int main() {
     array_set(inputs, 2, &input_doubles[2]);
 
     neural_network_evaluate(nn, inputs);
+
+    World* world = world_new(100,100,100,100);
 
     return 0;
 }

@@ -5,8 +5,9 @@
 
 int get_pow(int value, int exponent);
 
-double rand_double(void);
-unsigned long rand_long(void);
+double rand_double();
+unsigned long rand_long();
+int rand_int();
 
 SDL_Window* create_window(const char* title, int w, int h);
 #endif //ALIFE_TOOLS_H

@@ -3,11 +3,11 @@
 
 static unsigned long x=123456789, y=362436069, z=521288629;
 
-double rand_double(void) {
+double rand_double() {
     return (double) rand_long() / (double)ULONG_MAX;
 }
 
-unsigned long rand_long(void) {
+unsigned long rand_long() {
     unsigned long t;
     x ^= x << 16;
     x ^= x >> 5;
@@ -19,6 +19,11 @@ unsigned long rand_long(void) {
     z = t ^ x ^ y;
 
     return z;
+}
+
+int rand_int() {
+    int r = INT_MAX * rand_double();
+    return r;
 }
 
 int get_pow(int value, int exponent){
