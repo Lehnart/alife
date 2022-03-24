@@ -21,8 +21,8 @@ unsigned long rand_long() {
     return z;
 }
 
-int rand_int() {
-    int r = INT_MAX * rand_double();
+int rand_int(const int max) {
+    int r = (int) (rand_long() % max);
     return r;
 }
 
