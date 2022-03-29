@@ -7,6 +7,12 @@ double rand_double() {
     return (double) rand_long() / (double)ULONG_MAX;
 }
 
+void rand_seed(unsigned long x0, unsigned long y0, unsigned long z0){
+    x = x0;
+    y = y0;
+    z = z0;
+}
+
 unsigned long rand_long() {
     unsigned long t;
     x ^= x << 16;

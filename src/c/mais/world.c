@@ -84,7 +84,6 @@ void world_update(World* world){
                 continue;
             }
             if(agent_component->x == food_component->x && agent_component->y == food_component->y){
-                printf("EATEN");
                 world->foods[food_index] = NULL;
                 agent->n_food_eaten++;
                 break;
@@ -92,7 +91,6 @@ void world_update(World* world){
         }
 
         agent->n_actions++;
-
     }
 
 }

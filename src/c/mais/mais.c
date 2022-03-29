@@ -6,10 +6,13 @@
 #include "../tools.h"
 #include "agent.h"
 #include <SDL2/SDL.h>
+#include <sys/time.h>
 
 #define W 640
 #define H 480
-#define FRAME_DELAY_MS 10
+#define FRAME_DELAY_MS 0
+#define ITER_MAX 20000
+
 void draw_food(int x0, int y0, Uint32* pixels, SDL_PixelFormat *format){
 
     if(x0<2 || y0<2){return;}
@@ -110,6 +113,12 @@ void draw_agent(int x0, int y0, Agent* agent, Uint32* pixels, SDL_PixelFormat *f
 }
 
 int main() {
+
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    unsigned long t = 1000000 * tv.tv_sec + tv.tv_usec;
+    rand_seed(t,t+1,t+2);
+
     int layers[3] = {3, 3, 3};
     NeuralNetwork *nn = neural_network_new(layers, 3);
 
@@ -131,15 +140,20 @@ int main() {
 
     if (p_window == NULL) { return 1; }
     Uint32 ticks = SDL_GetTicks();
-    int is_over = 1;
+    int is_over = 0;
+    int iteration = 0;
+    while(!is_over){
 
-    while(is_over){
+        iteration++;
+        if(iteration == ITER_MAX){
+            is_over=1;
+        }
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
             SDL_PollEvent(&e);
             if (e.type == SDL_QUIT) {
-                is_over = 0;
+                is_over = 1;
             }
         }
 
@@ -176,8 +190,16 @@ int main() {
         ticks = SDL_GetTicks();
     }
 
-    SDL_DestroyWindow(p_window);
+    for(unsigned int i = 0; i<world->n_agents; i++){
+        WorldComponent * component = world->agents[i];
+        Agent *agent = (Agent*) component->data;
+        double result = (double) agent->n_food_eaten / (double) agent->n_actions;
+        printf("food eaten %d\n", agent->n_food_eaten);
+        printf("result %f\n", result);
+    }
 
+
+    SDL_DestroyWindow(p_window);
     SDL_Quit();
 
     return 0;
