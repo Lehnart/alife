@@ -8,6 +8,9 @@ Agent* agent_new(){
     agent->direction = rand_int(4);
     agent->think = agent_think;
 
+    agent->n_actions = 0;
+    agent->n_food_eaten = 0;
+
     return agent;
 }
 

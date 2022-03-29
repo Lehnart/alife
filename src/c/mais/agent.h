@@ -15,6 +15,8 @@ typedef struct Agent{
     Direction direction;
     void (*think)(struct Agent* agent);
 
+    int n_actions;
+    int n_food_eaten;
 } Agent;
 
 Agent* agent_new();

@@ -123,7 +123,7 @@ int main() {
 
     neural_network_evaluate(nn, inputs);
 
-    World* world = world_new(640,480,1,1000);
+    World* world = world_new(640,480,1,5000);
 
     SDL_Window *p_window = create_window("MAIS", W, H);
     SDL_Surface *p_surf = SDL_GetWindowSurface(p_window);
@@ -159,6 +159,9 @@ int main() {
 
         for(unsigned int i = 0; i<world->n_foods; i++){
             WorldComponent * component = world->foods[i];
+            if (component == NULL){
+                continue;
+            }
             int x = component->x;
             int y = component->y;
             draw_food(x,y,pixels,p_surf->format);

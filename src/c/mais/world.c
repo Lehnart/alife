@@ -46,9 +46,10 @@ void world_update(World* world){
     }
 
     for(unsigned int i = 0; i<world->n_agents; i++){
-        WorldComponent * component = world->agents[i];
-        Action action = ((Agent*) component->data)->action;
-        Direction* direction = &((Agent*) component->data)->direction;
+        WorldComponent * agent_component = world->agents[i];
+        Agent* agent = (Agent*) agent_component->data;
+        Action action = ((Agent*) agent_component->data)->action;
+        Direction* direction = &((Agent*) agent_component->data)->direction;
         if(action == ACTION_NONE){
             continue;
         }
@@ -65,17 +66,33 @@ void world_update(World* world){
             else if(*direction==DIRECTION_RIGHT) *direction=DIRECTION_DOWN;
         }
         else if(action == ACTION_FORWARD){
-            if(*direction==DIRECTION_UP) component->y++;
-            else if(*direction==DIRECTION_LEFT) component->x--;
-            else if(*direction==DIRECTION_DOWN) component->y--;
-            else if(*direction==DIRECTION_RIGHT) component->x++;
+            if(*direction==DIRECTION_UP) agent_component->y++;
+            else if(*direction==DIRECTION_LEFT) agent_component->x--;
+            else if(*direction==DIRECTION_DOWN) agent_component->y--;
+            else if(*direction==DIRECTION_RIGHT) agent_component->x++;
 
-            if(component->y < 0) component->y = 0;
-            if(component->x < 0) component->x = 0;
-            if(component->y >= world->h) component->y = (int) world->h-1;
-            if(component->x >= world->w) component->x = (int) world->w-1;
+            if(agent_component->y < 0) agent_component->y = 0;
+            if(agent_component->x < 0) agent_component->x = 0;
+            if(agent_component->y >= world->h) agent_component->y = (int) world->h - 1;
+            if(agent_component->x >= world->w) agent_component->x = (int) world->w - 1;
 
         }
+
+        for(int food_index = 0; food_index < world->n_foods; food_index++){
+            WorldComponent* food_component = world->foods[food_index];
+            if(food_component == NULL){
+                continue;
+            }
+            if(agent_component->x == food_component->x && agent_component->y == food_component->y){
+                printf("EATEN");
+                world->foods[food_index] = NULL;
+                agent->n_food_eaten++;
+                break;
+            }
+        }
+
+        agent->n_actions++;
+
     }
 
 }
