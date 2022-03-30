@@ -1,9 +1,9 @@
 
-#include "../array.h"
-#include "../graph.h"
-#include "../neural_network.h"
+#include "../../tools/array.h"
+#include "../../tools/graph.h"
+#include "neural_network.h"
 #include "world.h"
-#include "../tools.h"
+#include "../../tools/tools.h"
 #include "agent.h"
 #include <SDL2/SDL.h>
 #include <sys/time.h>

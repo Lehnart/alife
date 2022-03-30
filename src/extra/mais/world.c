@@ -1,7 +1,7 @@
 #include <malloc.h>
 #include "world.h"
 #include "agent.h"
-#include "../tools.h"
+#include "../../tools/tools.h"
 
 World* world_new(unsigned int w, unsigned int h, unsigned int n_agents, unsigned int n_foods){
     World *world = malloc(sizeof(World));

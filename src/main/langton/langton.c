@@ -5,12 +5,12 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-#include "../cell_array.h"
-#include "../tools.h"
+#include "../../tools/cell_array.h"
+#include "../../tools/tools.h"
 
 #define W 120
 #define H 120
-#define STATE_COUNT 6
+#define STATE_COUNT 8
 #define FRAME_DELAY_MS 1
 
 void evolve(CellArray* pCA, const int* rule) {
@@ -42,13 +42,13 @@ void evolve(CellArray* pCA, const int* rule) {
 
 int main() {
 
-    SDL_Window *p_window = create_window("Byl", W, H);
+    SDL_Window *p_window = create_window("Langton", W, H);
     SDL_Surface *p_surf = SDL_GetWindowSurface(p_window);
 
     if (p_window == NULL) { return 1; }
 
     CellArray *ca = cell_array(W, H);
-    FILE* array_file = fopen("res/byl_array.txt", "r");
+    FILE* array_file = fopen("res/langton_array.txt", "r");
     int index = 0;
     int c;
     c = fgetc(array_file);
@@ -62,12 +62,12 @@ int main() {
     }
     fclose(array_file);
 
-    int r[STATE_COUNT] = {  0,192,  0,  0,192,192};
-    int g[STATE_COUNT] = {  0,  0,192,  0,  0,192};
-    int b[STATE_COUNT] = {  0,  0,  0,192,192,  0};
+    int r[STATE_COUNT] = {  0,192,  0,  0,192,192,  0,192};
+    int g[STATE_COUNT] = {  0,  0,192,  0,  0,192,192,192};
+    int b[STATE_COUNT] = {  0,  0,  0,192,192,  0,192,192};
 
     int rule[100000]= {0};
-    FILE* file = fopen("res/byl_rule.txt", "r");
+    FILE* file = fopen("res/langton_rule.txt", "r");
 
     char buffer[7]= {0};
     fgets(buffer,10,file);

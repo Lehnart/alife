@@ -1,8 +1,8 @@
 #ifndef ALIFE_SPIRAL_RULE_H
 #define ALIFE_SPIRAL_RULE_H
 
-#include "../cell_neighborhood.h"
-#include "../cell_array.h"
+#include "../../tools/cell_neighborhood.h"
+#include "../../tools/cell_array.h"
 
 typedef struct{
     float decay_proba;

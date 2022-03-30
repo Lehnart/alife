@@ -1,6 +1,6 @@
 #include <malloc.h>
 #include "agent.h"
-#include "../tools.h"
+#include "../../tools/tools.h"
 
 Agent* agent_new(){
     Agent* agent = malloc(sizeof(Agent));

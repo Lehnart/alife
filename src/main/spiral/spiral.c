@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL.h>
 #include <stdlib.h>
-#include "../cell_array.h"
+#include "../../tools/cell_array.h"
 #include "spiral_rule.h"
-#include "../tools.h"
+#include "../../tools/tools.h"
 
 #define W 800
 #define H 800
