@@ -25,10 +25,12 @@ enum SpecialEnum {
 
 
 typedef struct State{
-    unsigned int component : 4;
-    unsigned int special : 2;
-    unsigned int growth : 1;
-    unsigned int bound : 1;
+    int component : 4;
+    int special : 2;
+    int growth : 1;
+    int bound : 1;
 } State;
+
+State* state_create();
 
 #endif //ALIFE_STATE_H

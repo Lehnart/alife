@@ -32,11 +32,11 @@ typedef struct {
     void**    array;
 } CellArray;
 
-CellArray *         cell_array          (int w, int h);
+CellArray *         ca_create          (int w, int h, void* (*create_state)());
 
-int                 get_index           (const CellArray* ca, int x, int y);
-void*               get                 (const CellArray* ca, int x, int y);
-CellNeighborhood    get_neighborhood    (const CellArray* ca, int x, int y);
-void                set                 (CellArray* ca, int x, int y, void* s);
+int                 ca_get_index           (const CellArray* ca, int x, int y);
+void*               ca_get                 (const CellArray* ca, int x, int y);
+CellNeighborhood    ca_get_neighborhood    (const CellArray* ca, int x, int y);
+void                ca_set                 (CellArray* ca, int x, int y, void* s);
 
 #endif //ALIFE_G_CELL_ARRAY_H

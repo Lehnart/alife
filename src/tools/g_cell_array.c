@@ -9,7 +9,7 @@
  * @param h height of the grid
  * @return the newly created array
  */
-CellArray *cell_array(int w, int h) {
+CellArray *ca_create(int w, int h, void* (*create_state)()) {
 
     void **p_array =  malloc(sizeof(void *) * (w * h));
 
@@ -20,7 +20,7 @@ CellArray *cell_array(int w, int h) {
 
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
-            p_array[x + (w * y)] = 0;
+            p_array[x + (w * y)] = create_state();
         }
     }
 
@@ -34,7 +34,7 @@ CellArray *cell_array(int w, int h) {
  * @param y
  * @return index in array
  */
-int get_index(const CellArray *ca, int x, int y) {
+int ca_get_index(const CellArray *ca, int x, int y) {
     if (x < 0) x = ca->w + x;
     if (x >= ca->w) x = x - ca->w;
     if (y < 0) y = ca->h + y;
@@ -49,8 +49,8 @@ int get_index(const CellArray *ca, int x, int y) {
  * @param y
  * @return cell state at (x,y)
  */
-void* get(const CellArray *ca, int x, int y) {
-    int index = get_index(ca, x, y);
+void* ca_get(const CellArray *ca, int x, int y) {
+    int index = ca_get_index(ca, x, y);
     return ca->array[index];
 }
 
@@ -61,7 +61,7 @@ void* get(const CellArray *ca, int x, int y) {
  * @param y
  * @param s new state of cell
  */
-void set(CellArray *ca, int x, int y, void* s) {
+void ca_set(CellArray *ca, int x, int y, void* s) {
     if (x < 0) return;
     if (x >= ca->w) return;
     if (y < 0) return;
@@ -76,17 +76,17 @@ void set(CellArray *ca, int x, int y, void* s) {
  * @param y
  * @return Neighborhood of 8 cells around (x,y)
  */
-CellNeighborhood get_neighborhood(const CellArray *ca, int x, int y) {
+CellNeighborhood ca_get_neighborhood(const CellArray *ca, int x, int y) {
     CellNeighborhood cn;
-    cn.m = get(ca, x, y);
-    cn.t = get(ca, x, y - 1);
-    cn.b = get(ca, x, y + 1);
-    cn.r = get(ca, x + 1, y);
-    cn.l = get(ca, x - 1, y);
-    cn.tl = get(ca, x - 1, y - 1);
-    cn.tr = get(ca, x + 1, y - 1);
-    cn.bl = get(ca, x - 1, y + 1);
-    cn.br = get(ca, x + 1, y + 1);
+    cn.m = ca_get(ca, x, y);
+    cn.t = ca_get(ca, x, y - 1);
+    cn.b = ca_get(ca, x, y + 1);
+    cn.r = ca_get(ca, x + 1, y);
+    cn.l = ca_get(ca, x - 1, y);
+    cn.tl = ca_get(ca, x - 1, y - 1);
+    cn.tr = ca_get(ca, x + 1, y - 1);
+    cn.bl = ca_get(ca, x - 1, y + 1);
+    cn.br = ca_get(ca, x + 1, y + 1);
 
     return cn;
 }

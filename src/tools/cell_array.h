@@ -33,7 +33,7 @@ typedef struct {
 } CellArray;
 
 CellArray *         random_cell_array   (int w, int h, const int * states, const double * cumulative_prob);
-CellArray *         cell_array          (int w, int h);
+CellArray *         ca_create          (int w, int h);
 
 int                 get_index           (const CellArray* ca, int x, int y);
 int                 get                 (const CellArray* ca, int x, int y);

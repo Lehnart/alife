@@ -1,5 +1,7 @@
-//
-// Created by User on 01/04/2022.
-//
-
+#include <malloc.h>
 #include "state.h"
+
+State* state_create(){
+    State *s = malloc(sizeof(State));
+    return s;
+}

@@ -5,36 +5,90 @@
 
 #include "../../tools/g_cell_array.h"
 #include "../../tools/tools.h"
+#include "state.h"
+#include "texture.h"
 
-#define W 640
-#define H 480
+#define W 600
+#define H 450
+
 #define STATE_COUNT 6
-#define FRAME_DELAY_MS 1
+#define FRAME_DELAY_MS 1000
+
+static State intermediate_array [W*H];
+
+void evolve(CellArray* ca) {
+    State *ns;
+
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            CellNeighborhood cn = ca_get_neighborhood(ca, x, y);
+            State *m = cn.m;
+            State *l = cn.l;
+
+            ns = &intermediate_array[x + (ca->w * y)];
+            *ns = *m;
+
+            if (m->component == COMP_O && l->component == COMP_RIGHT ) {
+                ns->component = COMP_RIGHT;
+            }
+            else if (m->component == COMP_RIGHT && l->component == COMP_LEFT_TURN) {
+                ns->component = COMP_LEFT_TURN;
+            }
+            else if (m->component == COMP_RIGHT && l->component == COMP_RIGHT) {
+                ns->component = COMP_RIGHT;
+            }
+            else if (m->component == COMP_LEFT_TURN){
+                ns->component = COMP_O;
+            }
+        }
+    }
+
+    State *s;
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            s = ca->array[x + (ca->w * y)];
+            *s = intermediate_array[x + (ca->w * y)];
+        }
+    }
+}
+
 
 int main() {
 
     SDL_Window *window = create_window("Reggia", W, H);
-    SDL_Surface *surf = SDL_GetWindowSurface(window);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (window == NULL) { return 1; }
 
-    SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,  SDL_TEXTUREACCESS_STREAMING,3,3);
-    SDL_PixelFormat *format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
-    void* temp;
-    int pitch;
-    Uint32* pixels;
-    SDL_LockTexture(texture, NULL, &temp, &pitch);
-    pixels = temp;
-    for(int i = 0; i < 3; i++)
-    {
-        for(int j = 0; j < 3; j++)
-            pixels[i * 3 + j] = SDL_MapRGBA(format, 64*(i+1),  64*(j+1), 0, (Uint8) 255);
-    }
-    SDL_FreeFormat(format);
-    SDL_UnlockTexture(texture);
+    CellArray *ca = ca_create(W, H, (void* (*)())state_create);
+    State* s;
+    s = (State *)ca_get(ca,200/2,150/2);
+    s->component = COMP_LEFT_TURN;
+    s = (State *)ca_get(ca,200/2+1,150/2);
+    s->component = COMP_RIGHT;
+    s = (State *)ca_get(ca,200/2+2,150/2);
+    s->component = COMP_RIGHT;
+    s = (State *)ca_get(ca,200/2+3,150/2);
+    s->component = COMP_O;
+    s = (State *)ca_get(ca,200/2+4,150/2);
+    s->component = COMP_O;
+
+    s = (State *)ca_get(ca,200/2,150/2-1);
+    s->component = COMP_O;
+    s = (State *)ca_get(ca,200/2+2,150/2-1);
+    s->component = COMP_O;
+
+    s = (State *)ca_get(ca,200/2,150/2-2);
+    s->component = COMP_O;
+    s = (State *)ca_get(ca,200/2+1,150/2-2);
+    s->component = COMP_O;
+    s = (State *)ca_get(ca,200/2+2,150/2-2);
+    s->component = COMP_O;
+
+    SDL_Texture* textureO = texture_o(renderer);
+    SDL_Texture* textureRight = texture_right(renderer);
+    SDL_Texture* textureLeftTurn = texture_left_turn(renderer);
 
 
-    CellArray *ca = cell_array(W, H);
 
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
@@ -56,7 +110,14 @@ int main() {
                 rect.y = j;
                 rect.w = 3;
                 rect.h = 3;
-                SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+                void* d = ca_get(ca, i / 3, j / 3);
+                State* s= d;
+                SDL_Texture * texture = NULL;
+                if(s->component==COMP_O) texture = textureO;
+                else if(s->component==COMP_RIGHT) texture = textureRight;
+                else if(s->component==COMP_LEFT_TURN) texture = textureLeftTurn;
+                if(texture != NULL) SDL_RenderCopy(renderer, texture, NULL, &rect);
             }
         }
 
@@ -67,6 +128,8 @@ int main() {
             SDL_Delay(FRAME_DELAY_MS - delay);
         }
         ticks = SDL_GetTicks();
+
+        evolve(ca);
     }
 
     SDL_DestroyWindow(window);

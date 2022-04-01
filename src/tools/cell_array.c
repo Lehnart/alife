@@ -7,7 +7,7 @@
  * @param h height of the grid
  * @return the newly created array
  */
-CellArray *cell_array(int w, int h) {
+CellArray *ca_create(int w, int h) {
 
     int *p_array = (int *) malloc(sizeof(int) * (w * h));
 

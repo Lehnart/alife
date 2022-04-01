@@ -47,7 +47,7 @@ int main() {
 
     if (p_window == NULL) { return 1; }
 
-    CellArray *ca = cell_array(W, H);
+    CellArray *ca = ca_create(W, H);
     FILE* array_file = fopen("res/langton_array.txt", "r");
     int index = 0;
     int c;
