@@ -1,0 +1,4 @@
+#ifndef ALIFE_TEXTURE_H
+#define ALIFE_TEXTURE_H
+
+#endif //ALIFE_TEXTURE_H

@@ -4,8 +4,10 @@ project(alife C)
 find_package(SDL2 REQUIRED SDL2)
 
 set(CMAKE_C_STANDARD 11)
+
 add_executable(langton main/langton/langton.c tools/cell_array.c tools/tools.c)
 add_executable(byl main/byl/byl.c tools/cell_array.c tools/tools.c)
+add_executable(reggia main/reggia/reggia.c tools/tools.c main/reggia/state.c main/reggia/state.h tools/g_cell_array.c tools/g_cell_array.h main/reggia/texture.c main/reggia/texture.h)
 add_executable(spiral main/spiral/spiral.c tools/cell_array.c main/spiral/spiral_rule.c tools/tools.c)
 add_executable(ipd main/ipd/ipd.c tools/cell_array.c main/ipd/ipd_rule.c main/ipd/ipd.c main/ipd/ipd_state.c tools/tools.c)
 add_executable(l_systems extra/l_systems/l_systems.c extra/l_systems/turtle.c tools/tools.c)
@@ -13,6 +15,7 @@ add_executable(mais extra/mais/mais.c extra/mais/agent.c extra/mais/world.c tool
 
 target_link_libraries(langton ${SDL2_LIBRARIES})
 target_link_libraries(byl ${SDL2_LIBRARIES})
+target_link_libraries(reggia ${SDL2_LIBRARIES})
 target_link_libraries(ipd ${SDL2_LIBRARIES})
 target_link_libraries(spiral ${SDL2_LIBRARIES})
 target_link_libraries(l_systems ${SDL2_LIBRARIES} m)
