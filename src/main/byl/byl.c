@@ -11,7 +11,7 @@
 #define W 120
 #define H 120
 #define STATE_COUNT 6
-#define FRAME_DELAY_MS 1
+#define FRAME_DELAY_MS 50
 
 void evolve(CellArray* pCA, const int* rule) {
 
@@ -69,7 +69,7 @@ int main() {
     int rule[100000]= {0};
     FILE* file = fopen("res/byl_rule.txt", "r");
 
-    char buffer[7]= {0};
+    char buffer[10]= {0};
     fgets(buffer,10,file);
 
     while(buffer[0] >= '0' && buffer[0] <= '9'){
