@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#define PI 3.14159f
+
 int get_pow(int value, int exponent);
 
 void rand_seed(unsigned long x0, unsigned long y0, unsigned long z0);
