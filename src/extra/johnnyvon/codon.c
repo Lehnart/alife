@@ -4,6 +4,8 @@
 
 Codon* codon_new(float max_x, float max_y){
 
+    Codon* codon = malloc(sizeof(Codon));
+
     int arm_count = 2;
     Arm **arms = malloc(arm_count*sizeof(Arm*));
     enum ARM_TYPE* arm_types = malloc(arm_count*sizeof(enum ARM_TYPE));
@@ -15,22 +17,23 @@ Codon* codon_new(float max_x, float max_y){
         arms[i]->length = 0.f;
         arms[i]->angle = 0.f;
         arms[i]->bound = NULL;
+        arms[i]->codon = codon;
     }
 
-    arms[0]->length = 10.f;
+    arms[0]->length = 20.f;
     arms[0]->angle = 0.f;
     arms[0]->type = ARM_BLUE;
-    arms[0]->radius = 5.f;
+    arms[0]->radius = 10.f;
 
-    arms[1]->length = 10.f;
+    arms[1]->length = 20.f;
     arms[1]->angle = PI;
     arms[1]->type = ARM_RED;
-    arms[1]->radius = 5.f;
+    arms[1]->radius = 10.f;
 
     //arms[2]->length = 5.f;
     //arms[2]->angle = PI/2.f;
 
-    Codon* codon = malloc(sizeof(Codon));
+
 
     codon->arms = arms;
     codon->arm_count = arm_count;
@@ -62,16 +65,17 @@ void codon_get_arm_position(Codon* codon, Arm* arm, float* x, float* y){
 
 void codon_update_velocities(Codon* codon) {
 
-    float LINEAR_VISCOSITY =  1.f - pow(1 - 0.10, TIMESTEP_DURATION);
-    float ANGULAR_VISCOSITY = 1.f - pow(1 - 0.05, TIMESTEP_DURATION);
+    float LINEAR_VISCOSITY =  1.f - pow(1 - 0.2, TIMESTEP_DURATION);
+    float ANGULAR_VISCOSITY = 1.f - pow(1 - 0.3, TIMESTEP_DURATION);
 
     codon->vtheta *= (1 - ANGULAR_VISCOSITY);
     codon->vx *= (1 - LINEAR_VISCOSITY);
     codon->vy *= (1 - LINEAR_VISCOSITY);
 
-    codon->vx += TIMESTEP_DURATION * (rand_double() - 0.5) / 2.;
-    codon->vy += TIMESTEP_DURATION * (rand_double() - 0.5) / 2.;
-    codon->vtheta += TIMESTEP_DURATION * (rand_double() - 0.5) / 10.0;
+    codon->vx += TIMESTEP_DURATION * (rand_double() - 0.5) / 0.4f;
+    codon->vy += TIMESTEP_DURATION * (rand_double() - 0.5) / 0.4f;
+    codon->vtheta += TIMESTEP_DURATION * (rand_double() - 0.5) / 2.0f;
+
 
     codon->vtheta += codon->atheta * TIMESTEP_DURATION;
     codon->vx += codon->ax * TIMESTEP_DURATION;
@@ -95,12 +99,12 @@ void codon_update_positions(Codon* codon, float max_x, float max_y) {
     while (codon->theta < 0.0f) codon->theta += 2*PI;
 
     codon->x += codon->vx * TIMESTEP_DURATION;
-    if(codon->x < 0.f) codon->x = max_x + codon->x;
-    if(codon->x > max_x) codon->x = codon->x - max_x;
+    if(codon->x < 0.f) codon->x = 0.f;
+    if(codon->x > max_x) codon->x = max_x-0.01f;
 
     codon->y += codon->vy * TIMESTEP_DURATION;
-    if(codon->y < 0.f) codon->y = max_y + codon->y;
-    if(codon->y > max_y) codon->y = codon->y - max_y;
+    if(codon->y < 0.f) codon->y = 0.f;
+    if(codon->y > max_y) codon->y = max_y-0.01f;
 
 }
 
@@ -117,17 +121,20 @@ void codon_arm_interact(Codon* codon1, int arm_index1, Codon* codon2, int arm_in
     if ( arm1->bound != NULL && arm1->bound == arm2 ){
 
         float dtheta = theta2 - theta1;
-        while (dtheta > 2.*PI) dtheta -= 2*PI;
-        while (dtheta < 0.f) dtheta += 2*PI;
+        while (dtheta > PI) dtheta -= 2*PI;
+        while (dtheta < -PI) dtheta += 2*PI;
 
-        codon1->atheta += (theta2-theta1)*FORCE_ROTATION*TIMESTEP_DURATION;
-        codon2->atheta -= (theta2-theta1)*FORCE_ROTATION*TIMESTEP_DURATION;
+        codon1->atheta += dtheta*FORCE_ROTATION*TIMESTEP_DURATION;
+        codon2->atheta -= dtheta*FORCE_ROTATION*TIMESTEP_DURATION;
 
         codon1->ax += (x2-x1)*FORCE_TRANSLATION*TIMESTEP_DURATION;
         codon2->ax -= (x2-x1)*FORCE_TRANSLATION*TIMESTEP_DURATION;
 
         codon1->ay += (y2-y1)*FORCE_TRANSLATION*TIMESTEP_DURATION;
         codon2->ay -= (y2-y1)*FORCE_TRANSLATION*TIMESTEP_DURATION;
+
+        printf("ax = %f \n", (x2-x1)*FORCE_TRANSLATION*TIMESTEP_DURATION);
+        printf("ay = %f \n",  (y2-y1)*FORCE_TRANSLATION*TIMESTEP_DURATION);
 
         return;
     }
@@ -152,8 +159,8 @@ void codon_arm_interact(Codon* codon1, int arm_index1, Codon* codon2, int arm_in
             return;
         }
         else{
-            codon1->atheta -= (theta2-theta1)*FORCE_ROTATION*TIMESTEP_DURATION;
-            codon2->atheta += (theta2-theta1)*FORCE_ROTATION*TIMESTEP_DURATION;
+            codon1->atheta -= dangle*FORCE_ROTATION*TIMESTEP_DURATION;
+            codon2->atheta += dangle*FORCE_ROTATION*TIMESTEP_DURATION;
 
             codon1->ax -= 1./(x2-x1)*FORCE_TRANSLATION*TIMESTEP_DURATION;
             codon2->ax += 1./(x2-x1)*FORCE_TRANSLATION*TIMESTEP_DURATION;

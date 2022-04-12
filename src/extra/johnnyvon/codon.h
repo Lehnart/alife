@@ -5,11 +5,11 @@
 
 #define TIMESTEP_DURATION 0.05f
 
-#define FORCE_ROTATION 0.10f
-#define FORCE_TRANSLATION 1.f
+#define FORCE_ROTATION 2.0f
+#define FORCE_TRANSLATION 2000.f
 
-#define V_XY_MAX 2.f
-#define V_THETA_MAX 2.f
+#define V_XY_MAX 10.f
+#define V_THETA_MAX 5.f
 
 #define MAX_INTERACTION_DISTANCE 20.f
 
@@ -24,6 +24,8 @@ typedef struct Arm{
 
     struct Arm* bound;
     enum ARM_TYPE type;
+
+    struct Codon* codon;
 } Arm;
 
 typedef struct Codon{

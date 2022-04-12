@@ -8,7 +8,7 @@
 #define WINDOW_H 600
 
 #define FRAME_DELAY_MS 1
-#define CODON_COUNT 250
+#define CODON_COUNT 100
 
 void draw_circle(SDL_Renderer *renderer, int x, int y, float r, int n_step){
     float step = 2.f*PI/ (float)n_step;
@@ -41,10 +41,9 @@ int main() {
 //    codons[0]->theta = 0;
 //
 //    codons[1] = codon_new((float)WINDOW_W,(float)WINDOW_H);
-//    codons[1]->x = 340;
+//    codons[1]->x = 470;
 //    codons[1]->y = 240;
 //    codons[1]->theta = 0;
-
 
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
@@ -79,6 +78,19 @@ int main() {
                 SDL_RenderDrawLine(renderer, cx, cy, ix, iy);
                 SDL_SetRenderDrawColor(renderer, r[type],g[type],b[type],255);
                 draw_circle(renderer, ix, iy, arm_field_radius, 18);
+
+                if(arm->bound != NULL){
+                    Arm* arm2 = arm->bound;
+                    Codon* codon2 = arm2->codon;
+                    int cx2 = (int) codon2->x;
+                    int cy2 = (int) codon2->y;
+
+                    int ix2 = cx2 + (int) (arm2->length*cosf(arm2->angle+codon2->theta));
+                    int iy2 = cy2 + (int) (arm2->length*sinf(arm2->angle+codon2->theta));
+
+                    SDL_SetRenderDrawColor(renderer, 0,255,0, 255);
+                    SDL_RenderDrawLine(renderer, ix, iy, ix2, iy2);
+                }
             }
 
             SDL_SetRenderDrawColor(renderer, r[ARM_YELLOW],g[ARM_YELLOW],b[ARM_YELLOW],255);

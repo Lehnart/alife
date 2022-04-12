@@ -14,7 +14,7 @@ add_executable(ipd main/ipd/ipd.c tools/cell_array.c main/ipd/ipd_rule.c main/ip
 add_executable(l_systems extra/l_systems/l_systems.c extra/l_systems/turtle.c tools/tools.c)
 add_executable(stochastic_l_systems extra/l_systems/stochastic_l_systems.c extra/l_systems/turtle.c tools/tools.c)
 add_executable(mais extra/mais/mais.c extra/mais/agent.c extra/mais/world.c tools/graph.c tools/array.c extra/mais/neural_network.c tools/tools.c)
-add_executable(johnnyvon main/johnnyvon/johnnyvon.c tools/tools.c main/johnnyvon/codon.c main/johnnyvon/codon.h)
+add_executable(johnnyvon extra/johnnyvon/johnnyvon.c tools/tools.c extra/johnnyvon/codon.c extra/johnnyvon/codon.h)
 
 target_link_libraries(langton ${SDL2_LIBRARIES})
 target_link_libraries(byl ${SDL2_LIBRARIES})
