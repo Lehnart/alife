@@ -65,7 +65,7 @@ int main() {
             for(j = 0; j < H; j++) {
 
                 int state_count[STATE_COUNT] = {0,0,0,0,0,0};
-                CellNeighborhood cn = get_neighborhood(ca, i, j);
+                CellNeighborhood cn = ca_get_neighborhood(ca, i, j);
                 for(int index = 0; index < 9; index++){
                     int s = cn.states[index];
                     state_count[s]++;

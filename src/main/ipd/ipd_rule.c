@@ -92,28 +92,28 @@ void evolve(CellArray *pCA, const IPDRule *pRule) {
 
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
-            CellNeighborhood cn = get_neighborhood(pCA, x, y);
-            intermediate_array[get_index(pCA, x, y)] = evaluate(&game, &cn);
+            CellNeighborhood cn = ca_get_neighborhood(pCA, x, y);
+            intermediate_array[ca_get_index(pCA, x, y)] = evaluate(&game, &cn);
         }
     }
 
     int *next_array = malloc(pCA->w * pCA->h * sizeof(int));
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
-            int t = get(pCA, x, y - 1);
-            float ts = intermediate_array[get_index(pCA, x, y - 1)];
+            int t = ca_get(pCA, x, y - 1);
+            float ts = intermediate_array[ca_get_index(pCA, x, y - 1)];
 
-            int b = get(pCA, x, y + 1);
-            float bs = intermediate_array[get_index(pCA, x, y + 1)];
+            int b = ca_get(pCA, x, y + 1);
+            float bs = intermediate_array[ca_get_index(pCA, x, y + 1)];
 
-            int l = get(pCA, x - 1, y);
-            float ls = intermediate_array[get_index(pCA, x - 1, y)];
+            int l = ca_get(pCA, x - 1, y);
+            float ls = intermediate_array[ca_get_index(pCA, x - 1, y)];
 
-            int r = get(pCA, x + 1, y);
-            float rs = intermediate_array[get_index(pCA, x + 1, y)];
+            int r = ca_get(pCA, x + 1, y);
+            float rs = intermediate_array[ca_get_index(pCA, x + 1, y)];
 
-            int m = get(pCA, x, y);
-            float ms = intermediate_array[get_index(pCA, x, y)];
+            int m = ca_get(pCA, x, y);
+            float ms = intermediate_array[ca_get_index(pCA, x, y)];
 
             float max = -1.f;
             int max_state = -1;
@@ -136,16 +136,16 @@ void evolve(CellArray *pCA, const IPDRule *pRule) {
             if (ms > max) {
                 max_state = m;
             }
-            next_array[get_index(pCA, x, y)] = max_state;
+            next_array[ca_get_index(pCA, x, y)] = max_state;
         }
     }
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
 
             if (rand_double() < pRule->mut_proba) {
-                set(pCA, x, y, (int) (rand_long() % pRule->state_count));
+                ca_set(pCA, x, y, (int) (rand_long() % pRule->state_count));
             } else {
-                set(pCA, x, y, next_array[get_index(pCA, x, y)]);
+                ca_set(pCA, x, y, next_array[ca_get_index(pCA, x, y)]);
             }
         }
     }

@@ -64,7 +64,7 @@ void evolve(CellArray* pCA, const SpiralRule* pRule) {
 
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
-            CellNeighborhood cn = get_neighborhood(pCA, x, y);
+            CellNeighborhood cn = ca_get_neighborhood(pCA, x, y);
             intermediate_array[x + (pCA->w * y)] = apply(pRule, &cn);
         }
     }
@@ -78,50 +78,50 @@ void evolve(CellArray* pCA, const SpiralRule* pRule) {
 
     for (int y = 0; y < pCA->h; y+=2) {
         for (int x = 0; x < pCA->w; x+=2) {
-            int tl = get(pCA, x, y);
-            int tr = get(pCA, x+1, y);
-            int bl = get(pCA, x, y+1);
-            int br = get(pCA, x+1, y+1);
+            int tl = ca_get(pCA, x, y);
+            int tr = ca_get(pCA, x + 1, y);
+            int bl = ca_get(pCA, x, y + 1);
+            int br = ca_get(pCA, x + 1, y + 1);
 
             double r = ( (double) rand() ) / ( (double) RAND_MAX );
 
             if (r < 0.5){
-                set(pCA, x, y, tr);
-                set(pCA, x, y+1, tl);
-                set(pCA, x+1, y+1, bl);
-                set(pCA, x+1, y, br);
+                ca_set(pCA, x, y, tr);
+                ca_set(pCA, x, y + 1, tl);
+                ca_set(pCA, x + 1, y + 1, bl);
+                ca_set(pCA, x + 1, y, br);
             }
 
             else{
-                set(pCA, x, y, bl);
-                set(pCA, x, y+1, br);
-                set(pCA, x+1, y+1, tr);
-                set(pCA, x+1, y, tl);
+                ca_set(pCA, x, y, bl);
+                ca_set(pCA, x, y + 1, br);
+                ca_set(pCA, x + 1, y + 1, tr);
+                ca_set(pCA, x + 1, y, tl);
             }
         }
     }
 
     for (int y = 1; y < pCA->h; y+=2) {
         for (int x = 1; x < pCA->w; x+=2) {
-            int tl = get(pCA, x, y);
-            int tr = get(pCA, x+1, y);
-            int bl = get(pCA, x, y+1);
-            int br = get(pCA, x+1, y+1);
+            int tl = ca_get(pCA, x, y);
+            int tr = ca_get(pCA, x + 1, y);
+            int bl = ca_get(pCA, x, y + 1);
+            int br = ca_get(pCA, x + 1, y + 1);
 
             double r = ( (double) rand() ) / ( (double) RAND_MAX );
 
             if (r < 0.5){
-                set(pCA, x, y, tr);
-                set(pCA, x, y+1, tl);
-                set(pCA, x+1, y+1, bl);
-                set(pCA, x+1, y, br);
+                ca_set(pCA, x, y, tr);
+                ca_set(pCA, x, y + 1, tl);
+                ca_set(pCA, x + 1, y + 1, bl);
+                ca_set(pCA, x + 1, y, br);
             }
 
             else{
-                set(pCA, x, y, bl);
-                set(pCA, x, y+1, br);
-                set(pCA, x+1, y+1, tr);
-                set(pCA, x+1, y, tl);
+                ca_set(pCA, x, y, bl);
+                ca_set(pCA, x, y + 1, br);
+                ca_set(pCA, x + 1, y + 1, tr);
+                ca_set(pCA, x + 1, y, tl);
             }
         }
     }

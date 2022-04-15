@@ -82,7 +82,7 @@ void draw_legend(const CellArray* pCA, SDL_Surface *p_surf, const int *r, const 
     for(int i=0; i<STATE_COUNT; i++) state_count[i]=0;
     for (int i = 0; i < GRID_W; i++) {
         for (int j = 0; j < GRID_H; j++) {
-            int s = get(pCA, i, j);
+            int s = ca_get(pCA, i, j);
             state_count[s]++;
         }
     }
@@ -170,7 +170,7 @@ int main() {
         pixels = (Uint32 *) p_surf->pixels;
         for (i = 0; i < GRID_W; i++) {
             for (j = 0; j < GRID_H; j++) {
-                int s = get(ca, i, j);
+                int s = ca_get(ca, i, j);
                 pixels[i + (j * WINDOW_W)] = SDL_MapRGBA(p_surf->format, r[s], g[s], b[s], 255);
             }
         }

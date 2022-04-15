@@ -33,12 +33,13 @@ typedef struct {
 } CellArray;
 
 CellArray *         random_cell_array   (int w, int h, const int * states, const double * cumulative_prob);
-CellArray *         ca_create          (int w, int h);
+CellArray *         ca_create           (int w, int h);
+void                ca_reset            (CellArray* ca);
 
-int                 get_index           (const CellArray* ca, int x, int y);
-int                 get                 (const CellArray* ca, int x, int y);
-CellNeighborhood    get_neighborhood    (const CellArray* ca, int x, int y);
-void                set                 (CellArray* ca, int x, int y, int s);
+int                 ca_get_index           (const CellArray* ca, int x, int y);
+int                 ca_get                 (const CellArray* ca, int x, int y);
+CellNeighborhood    ca_get_neighborhood    (const CellArray* ca, int x, int y);
+void                ca_set                 (CellArray* ca, int x, int y, int s);
 
 
 #endif //ALIFE_CELL_ARRAY_H

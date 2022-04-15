@@ -19,7 +19,7 @@ void evolve(CellArray* pCA, const int* rule) {
 
     for (int y = 0; y < pCA->h; y++) {
         for (int x = 0; x < pCA->w; x++) {
-            CellNeighborhood cn = get_neighborhood(pCA, x, y);
+            CellNeighborhood cn = ca_get_neighborhood(pCA, x, y);
             int s = 0;
             s += cn.m*10000;
             s += cn.t*1000;
@@ -135,7 +135,7 @@ int main() {
         for(i = 0; i < W; i++)
         {
             for(j = 0; j < H; j++) {
-                int s = get(ca, i, j);
+                int s = ca_get(ca, i, j);
                 pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s], g[s], b[s], 255);
             }
         }
