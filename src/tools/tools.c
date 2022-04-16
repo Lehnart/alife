@@ -7,6 +7,10 @@ double rand_double() {
     return (double) rand_long() / (double)ULONG_MAX;
 }
 
+float rand_float() {
+    return (float) rand_int(INT32_MAX) / (float) INT32_MAX;
+}
+
 void rand_seed(unsigned long x0, unsigned long y0, unsigned long z0){
     x = x0;
     y = y0;
