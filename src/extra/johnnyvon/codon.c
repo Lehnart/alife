@@ -42,15 +42,15 @@ Codon* codon_new(float max_x, float max_y){
     codon->y = (float) (rand_double()*max_y);
     codon->theta = rand_double()*2.f*PI;
 
-    codon->vx = 0.f;
-    codon->vy = 0.f;
-    codon->vtheta = 0.f;
+    codon->vx = 0.F;
+    codon->vy = 0.F;
+    codon->vtheta = 0.F;
 
-    codon->ax = 0.f;
-    codon->ay = 0.f;
+    codon->ax = 0.F;
+    codon->ay = 0.F;
     codon->atheta = 0.f;
 
-    codon->center_field_radius = rand_double() > 0.5 ? 0.01f : 6.f;
+    codon->center_field_radius = rand_double() > 0.5 ? 0.01F : 6.F;
 
     codon->splitting_state = 0;
     codon->strand_location_state = 0;

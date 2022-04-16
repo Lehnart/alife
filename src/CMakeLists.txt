@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(alife C)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+message(STATUS "module path ${CMAKE_MODULE_PATH}")
+
 find_package(SDL2 REQUIRED SDL2)
+find_package(SDL2_gfx REQUIRED)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -15,6 +19,7 @@ add_executable(l_systems extra/l_systems/l_systems.c extra/l_systems/turtle.c to
 add_executable(stochastic_l_systems extra/l_systems/stochastic_l_systems.c extra/l_systems/turtle.c tools/tools.c)
 add_executable(mais extra/mais/mais.c extra/mais/agent.c extra/mais/world.c tools/graph.c tools/array.c extra/mais/neural_network.c tools/tools.c)
 add_executable(johnnyvon extra/johnnyvon/johnnyvon.c tools/tools.c extra/johnnyvon/codon.c extra/johnnyvon/codon.h)
+add_executable(boids extra/boids/boids.c tools/tools.c )
 
 target_link_libraries(langton ${SDL2_LIBRARIES})
 target_link_libraries(byl ${SDL2_LIBRARIES})
@@ -26,3 +31,4 @@ target_link_libraries(l_systems ${SDL2_LIBRARIES} m)
 target_link_libraries(stochastic_l_systems ${SDL2_LIBRARIES} m)
 target_link_libraries(mais ${SDL2_LIBRARIES} m)
 target_link_libraries(johnnyvon ${SDL2_LIBRARIES} m)
+target_link_libraries(boids ${SDL2_LIBRARIES} ${SDL2_GFX_LIBRARIES})
