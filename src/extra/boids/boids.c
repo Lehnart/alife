@@ -4,10 +4,10 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <sys/time.h>
 
-#define W 800
-#define H 600
+#define W 1280
+#define H 720
 
-#define BIRD_COUNT 200
+#define BIRD_COUNT 250
 
 #define FRAME_DELAY_MS 0
 
@@ -40,7 +40,7 @@ int main() {
             }
         }
 
-        SDL_SetRenderDrawColor(p_renderer, 32, 32, 32, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(p_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(p_renderer);
 
         Triangle t;
