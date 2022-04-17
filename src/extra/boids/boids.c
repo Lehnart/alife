@@ -7,7 +7,7 @@
 #define W 800
 #define H 600
 
-#define BIRD_COUNT 100
+#define BIRD_COUNT 200
 
 #define FRAME_DELAY_MS 0
 
@@ -45,9 +45,9 @@ int main() {
 
         Triangle t;
         BirdInteraction interact = {false,false,false};
-        int rs[4] = {255, 92,  92,255};
-        int gs[4] = {255, 255,  92,92};
-        int bs[4] = {255, 92,  255,92};
+        int rs[4] = {255, 0,  0,255};
+        int gs[4] = {255, 255,  0,0};
+        int bs[4] = {255, 0,  255,0};
         int c_index=0;
 
         for(int i =0;i<BIRD_COUNT;i++){
