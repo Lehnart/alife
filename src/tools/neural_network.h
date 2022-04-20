@@ -1,7 +1,7 @@
 #ifndef ALIFE_NEURAL_NETWORK_H
 #define ALIFE_NEURAL_NETWORK_H
 
-#include "../../tools/graph.h"
+#include "graph.h"
 
 typedef struct NeuronEdge{
     double weight;

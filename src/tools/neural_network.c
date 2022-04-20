@@ -1,7 +1,7 @@
 #include <malloc.h>
 #include "neural_network.h"
 #include "math.h"
-#include "../../tools/tools.h"
+#include "tools.h"
 
 double activation(const double weights[], const double inputs[], double bias, int size) {
     double sum = 0.;
