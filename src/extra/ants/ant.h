@@ -8,11 +8,20 @@
 #define ANT_COLLISION_RADIUS 20
 #define ANT_COLLISION_ACCELERATION 30000.f
 
-#define ANT_ALIGNMENT_RADIUS 50
-#define ANT_ALIGNMENT_ACCELERATION 10000.f
+#define ANT_SEPARATION_RADIUS 75
+#define ANT_SEPARATION_ACCELERATION 10000.f
+
+#define ANT_SEEK_RADIUS 150
+#define ANT_SEEK_ACCELERATION 50000.f
 
 #define ANT_COHESION_RADIUS 250
 #define ANT_COHESION_ACCELERATION 10000.f
+
+#define TARGET_POS_X 800
+#define TARGET_POS_Y 500
+
+#define HOME_POS_X 200
+#define HOME_POS_Y 100
 
 typedef struct Ant{
     float x;
@@ -23,9 +32,12 @@ typedef struct Ant{
 
     float ax;
     float ay;
+
+    bool is_carrying;
 } Ant;
 
 typedef struct AntInteraction{
+    bool seek;
     bool cohesion;
     bool alignment;
     bool collision;
