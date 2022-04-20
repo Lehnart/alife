@@ -6,6 +6,7 @@ message(STATUS "module path ${CMAKE_MODULE_PATH}")
 
 find_package(SDL2 REQUIRED SDL2)
 find_package(SDL2_gfx REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -20,6 +21,7 @@ add_executable(stochastic_l_systems extra/l_systems/stochastic_l_systems.c extra
 add_executable(mais extra/mais/mais.c extra/mais/agent.c extra/mais/world.c tools/graph.c tools/array.c extra/mais/neural_network.c tools/tools.c)
 add_executable(johnnyvon extra/johnnyvon/johnnyvon.c tools/tools.c extra/johnnyvon/codon.c extra/johnnyvon/codon.h)
 add_executable(boids extra/boids/boids.c tools/tools.c extra/boids/bird.c extra/boids/bird.h)
+add_executable(ants extra/ants/ants.c tools/tools.c extra/ants/ant.c extra/ants/ant.h)
 
 target_link_libraries(langton ${SDL2_LIBRARIES})
 target_link_libraries(byl ${SDL2_LIBRARIES})
@@ -32,3 +34,4 @@ target_link_libraries(stochastic_l_systems ${SDL2_LIBRARIES} m)
 target_link_libraries(mais ${SDL2_LIBRARIES} m)
 target_link_libraries(johnnyvon ${SDL2_LIBRARIES} m)
 target_link_libraries(boids ${SDL2_LIBRARIES} ${SDL2_GFX_LIBRARIES} m)
+target_link_libraries(ants ${SDL2_LIBRARIES} ${SDL2_GFX_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} m)
