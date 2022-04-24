@@ -20,10 +20,12 @@ add_executable(stochastic_l_systems extra/l_systems/stochastic_l_systems.c extra
 add_executable(johnnyvon extra/johnnyvon/johnnyvon.c tools/tools.c extra/johnnyvon/codon.c extra/johnnyvon/codon.h)
 add_executable(boids extra/boids/boids.c tools/tools.c extra/boids/bird.c extra/boids/bird.h)
 add_executable(ants extra/ants/ants.c tools/tools.c extra/ants/ant.c extra/ants/ant.h)
+add_executable(bricalife bricalife/bricalife.c tools/tools.c tools/cell_array.c bricalife/atom.c bricalife/atom.h)
 
 target_link_libraries(langton ${SDL2_LIBRARIES})
 target_link_libraries(byl ${SDL2_LIBRARIES})
 target_link_libraries(evoloop ${SDL2_LIBRARIES})
+target_link_libraries(bricalife ${SDL2_LIBRARIES})
 target_link_libraries(ipd ${SDL2_LIBRARIES})
 target_link_libraries(spiral ${SDL2_LIBRARIES})
 target_link_libraries(l_systems ${SDL2_LIBRARIES} m)
