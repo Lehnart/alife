@@ -1,6 +1,13 @@
 #include "atom.h"
 #include "../tools/tools.h"
 
+Atom* atom_new(int x, int y, AtomType type){
+    Atom * atom = malloc(sizeof(Atom));
+    atom->x = x;
+    atom->y = y;
+    atom->type = type;
+    return atom;
+}
 void atom_update(Atom* atom, World* world){
 
     int max_x = world->width;
@@ -59,4 +66,42 @@ void world_add(World *world, const Atom *atom) {
 
 int world_get(World *world, int x, int y, AtomType type){
     return world->atom_count_array[x + (y * world->width)][type];
+}
+
+void world_update(World *world, Atom** atoms, int n_atoms){
+    for (int i = 0; i < world->width; i++) {
+        for (int j = 0; j < world->height; j++) {
+
+
+            if (world->atom_count_array[i + (j * world->width)][ATOM_CARBON] == 2){
+                if (rand_float() <0.99) continue;
+                int index= 0;
+                for(int ai=0;ai < n_atoms; ai++){
+                    Atom* atom = atoms[ai];
+                    if(atom->x == i && atom->y ==j && index == 0 && atom->type==ATOM_CARBON){
+                        atom->type = ATOM_DICARBON;
+                        index++;
+                    }
+                    if(atom->x == i && atom->y ==j && index == 1 && atom->type==ATOM_CARBON){
+                        atom->type = ATOM_ENERGY;
+                        index++;
+                    }
+                }
+            }
+
+
+            if (world->atom_count_array[i + (j * world->width)][ATOM_DICARBON] == 1
+            &&  world->atom_count_array[i + (j * world->width)][ATOM_ENERGY] == 1){
+                for(int ai=0;ai < n_atoms; ai++){
+                    Atom* atom = atoms[ai];
+                    if(atom->x == i && atom->y ==j && atom->type==ATOM_DICARBON){
+                        atom->type = ATOM_CARBON;
+                    }
+                    if(atom->x == i && atom->y ==j && atom->type==ATOM_ENERGY){
+                        atom->type = ATOM_CARBON;
+                    }
+                }
+            }
+        }
+    }
 }
