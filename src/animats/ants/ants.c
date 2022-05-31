@@ -6,6 +6,7 @@
 #include  <SDL2/SDL2_rotozoom.h>
 #include "../../tools/tools.h"
 #include "ant.h"
+#include "../../tools/image.h"
 
 #define W 1280
 #define H 720
@@ -16,8 +17,6 @@
 
 void draw_ant(Ant* ant, SDL_Surface* image, SDL_Renderer* p_renderer, Uint8 r, Uint8 g, Uint8 b);
 void draw_ant_carry(Ant* ant, SDL_Surface* image, SDL_Renderer* p_renderer);
-
-void draw_image(SDL_Surface* image, float x, float y, SDL_Renderer* p_renderer);
 
 int main() {
 
@@ -117,11 +116,3 @@ void draw_ant_carry(Ant* ant, SDL_Surface* image, SDL_Renderer* p_renderer){
     SDL_FreeSurface(rotation);
 }
 
-void draw_image(SDL_Surface* image, float x, float y, SDL_Renderer* p_renderer){
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(p_renderer, image);
-    int w,h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-    SDL_Rect rect = { ((int)(x))-(w/2),((int)(y))-(h/2),w,h};
-    SDL_RenderCopy(p_renderer, texture, NULL, &rect);
-    SDL_DestroyTexture(texture);
-}

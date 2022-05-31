@@ -1,5 +1,13 @@
-#include <sys/time.h>
 #include "../../tools/tools.h"
+#include "world.h"
+#include "../../tools/image.h"
+
+#define WORLD_SIZE 2500
+#define FOOD_COUNT 1000
+#define AGENT_COUNT 10
+
+#define GRID_WIDTH 50
+#define GRID_HEIGHT 50
 
 #define W 800
 #define H 800
@@ -19,6 +27,19 @@ int main() {
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
 
+    SDL_Surface* apple_image = SDL_LoadBMP("res/apple.bmp");
+    SDL_Texture * apple_texture = SDL_CreateTextureFromSurface(renderer, apple_image);
+    int apple_texture_w, apple_texture_h;
+    SDL_QueryTexture(apple_texture, NULL, NULL, &apple_texture_w, &apple_texture_h);
+
+
+    World* world = world_new(WORLD_SIZE);
+    for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
+    for (int i = 0; i<AGENT_COUNT; i++){
+        WorldAgent* agent = world_agent_new();
+        world_add_agent(world, agent, rand_int(WORLD_SIZE));
+    }
+
     while (is_over) {
 
         SDL_Event e;
@@ -29,13 +50,28 @@ int main() {
             }
         }
 
+
+        world_update(world);
+
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
+
+        for(int i = 0; i < world->size; i++){
+
+            if(world->positions[i].n_foods == 0) continue;
+
+            int x = i % GRID_WIDTH * ( W / GRID_WIDTH );
+            int y = i / GRID_HEIGHT * ( H / GRID_HEIGHT );
+            SDL_Rect rect = {x,y,apple_texture_w,apple_texture_h};
+            SDL_RenderCopy(renderer, apple_texture, NULL, &rect);
+        }
+
 
         SDL_RenderPresent(renderer);
         SDL_UpdateWindowSurface(window);
 
         Uint32 delay = (SDL_GetTicks() - ticks);
+        printf("delay %i \n", delay);
         if (delay < FRAME_DELAY_MS) {
             SDL_Delay(FRAME_DELAY_MS - delay);
         }
