@@ -7,6 +7,7 @@
 
 int get_pow(int value, int exponent);
 
+void init_random();
 void rand_seed(unsigned long x0, unsigned long y0, unsigned long z0);
 
 float rand_float();

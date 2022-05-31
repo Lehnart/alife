@@ -1,5 +1,5 @@
 #include <sys/time.h>
-#include "../tools/tools.h"
+#include "../../tools/tools.h"
 #include "atom.h"
 
 #define ATOM_COUNT 10000

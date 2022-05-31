@@ -1,4 +1,5 @@
 #include <limits.h>
+#include <sys/time.h>
 #include "tools.h"
 
 static unsigned long x=123456789, y=362436069, z=521288629;
@@ -9,6 +10,17 @@ double rand_double() {
 
 float rand_float() {
     return (float) rand_int(INT32_MAX) / (float) INT32_MAX;
+}
+
+void init_random(){
+    struct timeval te;
+    gettimeofday(&te, NULL); // get current time
+    long long m1 = te.tv_usec/1000;
+    gettimeofday(&te, NULL); // get current time
+    long long m2 = te.tv_usec/1000;
+    gettimeofday(&te, NULL); // get current time
+    long long m3 = te.tv_usec/1000;
+    rand_seed(m1,m2,m3);
 }
 
 void rand_seed(unsigned long x0, unsigned long y0, unsigned long z0){

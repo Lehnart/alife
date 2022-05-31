@@ -1,5 +1,5 @@
 #include "atom.h"
-#include "../tools/tools.h"
+#include "../../tools/tools.h"
 
 Atom* atom_new(int x, int y, AtomType type){
     Atom * atom = malloc(sizeof(Atom));
