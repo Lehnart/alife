@@ -1,10 +1,9 @@
 #include "../../tools/tools.h"
 #include "world.h"
-#include "../../tools/image.h"
 
 #define WORLD_SIZE 2500
 #define FOOD_COUNT 1000
-#define AGENT_COUNT 10
+#define AGENT_COUNT 1000
 
 #define GRID_WIDTH 50
 #define GRID_HEIGHT 50
@@ -12,7 +11,7 @@
 #define W 800
 #define H 800
 
-#define FRAME_DELAY_MS 1
+#define FRAME_DELAY_MS 10
 
 
 int main() {
@@ -32,6 +31,10 @@ int main() {
     int apple_texture_w, apple_texture_h;
     SDL_QueryTexture(apple_texture, NULL, NULL, &apple_texture_w, &apple_texture_h);
 
+    SDL_Surface* hero_image = SDL_LoadBMP("res/hero.bmp");
+    SDL_Texture * hero_texture = SDL_CreateTextureFromSurface(renderer, hero_image);
+    int hero_texture_w, hero_texture_h;
+    SDL_QueryTexture(hero_texture, NULL, NULL, &hero_texture_w, &hero_texture_h);
 
     World* world = world_new(WORLD_SIZE);
     for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
@@ -50,7 +53,6 @@ int main() {
             }
         }
 
-
         world_update(world);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -58,12 +60,18 @@ int main() {
 
         for(int i = 0; i < world->size; i++){
 
-            if(world->positions[i].n_foods == 0) continue;
-
-            int x = i % GRID_WIDTH * ( W / GRID_WIDTH );
-            int y = i / GRID_HEIGHT * ( H / GRID_HEIGHT );
-            SDL_Rect rect = {x,y,apple_texture_w,apple_texture_h};
-            SDL_RenderCopy(renderer, apple_texture, NULL, &rect);
+            if(world->positions[i].n_foods != 0) {
+                int x = i % GRID_WIDTH * (W / GRID_WIDTH);
+                int y = i / GRID_HEIGHT * (H / GRID_HEIGHT);
+                SDL_Rect rect = {x, y, apple_texture_w, apple_texture_h};
+                SDL_RenderCopy(renderer, apple_texture, NULL, &rect);
+            }
+            if(world->positions[i].agent != NULL){
+                int x = (i % GRID_WIDTH) * (W / GRID_WIDTH);
+                int y = (i / GRID_HEIGHT) * (H / GRID_HEIGHT);
+                SDL_Rect rect = {x, y, hero_texture_w, hero_texture_h};
+                SDL_RenderCopy(renderer, hero_texture, NULL, &rect);
+            }
         }
 
 
@@ -71,7 +79,6 @@ int main() {
         SDL_UpdateWindowSurface(window);
 
         Uint32 delay = (SDL_GetTicks() - ticks);
-        printf("delay %i \n", delay);
         if (delay < FRAME_DELAY_MS) {
             SDL_Delay(FRAME_DELAY_MS - delay);
         }
