@@ -3,9 +3,15 @@
 #include "../../tools/tools.h"
 
 
-WorldAgent *world_agent_new() {
+WorldAgent *world_agent_new(int hp) {
     WorldAgent *agent = malloc(sizeof(WorldAgent));
+    agent->action = ACTION_NONE;
+    agent->hp = hp;
     return agent;
+}
+
+void world_agent_delete(WorldAgent * agent) {
+    free(agent);
 }
 
 void world_agent_update(WorldAgent *agent, World *world, int pos) {
@@ -18,7 +24,7 @@ void world_agent_update(WorldAgent *agent, World *world, int pos) {
     WorldPosition mid_position = world->positions[mid_index];
     WorldPosition right_position = world->positions[right_index];
 
-    int r = rand_int(3);
+    int r = rand_int(4);
     agent->action = r;
 }
 
@@ -26,13 +32,19 @@ void world_act_agent(World *world, WorldAgent *agent, int pos) {
     if(agent->action == ACTION_NONE) return;
 
     int agent_pos = world_get_position(world, pos);
+    int *food_count = &world->positions[agent_pos].n_foods;
     WorldAgent *agent_at_pos = world->positions[agent_pos].agent;
     Action move = agent->action;
 
     if (agent_at_pos == agent) {
-        int next_pos;
+        int next_pos = agent_pos;
         if (move == ACTION_MOVE_LEFT) next_pos = world_get_position(world, pos - 1);
         if (move == ACTION_MOVE_RIGHT) next_pos = world_get_position(world, pos + 1);
+
+        if (move == ACTION_EAT && *food_count > 0){
+            (*food_count)--;
+            agent->hp++;
+        }
 
         WorldAgent *agent_next = world->positions[next_pos].agent;
         if (agent_next == NULL) {
@@ -42,6 +54,7 @@ void world_act_agent(World *world, WorldAgent *agent, int pos) {
     }
 
     agent->action = ACTION_NONE;
+    agent->hp--;
 }
 
 World *world_new(int size) {
@@ -95,6 +108,11 @@ void world_update(World *world) {
 
     for(int i =0; i<size; i++){
         WorldAgent * agent = world->positions[i].agent;
-        if(agent != NULL) world_act_agent(world, agent, i);
+        if(agent != NULL){
+            world_act_agent(world, agent, i);
+            if (agent->hp <= 0){
+                world->positions[i].agent= NULL;
+            }
+        }
     }
 }

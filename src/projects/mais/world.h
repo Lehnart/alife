@@ -4,11 +4,13 @@
 typedef enum Action{
     ACTION_NONE,
     ACTION_MOVE_LEFT,
-    ACTION_MOVE_RIGHT
+    ACTION_MOVE_RIGHT,
+    ACTION_EAT
 } Action;
 
 typedef struct WorldAgent{
     Action action;
+    int hp;
 } WorldAgent;
 
 typedef struct WorldPosition{
@@ -23,7 +25,8 @@ typedef struct World{
 
 
 
-WorldAgent* world_agent_new     ();
+WorldAgent* world_agent_new     (int hp);
+void        world_agent_delete(WorldAgent * agent);
 void        world_agent_update  (WorldAgent* agent, World* world, int pos);
 
 World*  world_new           (int size);

@@ -3,7 +3,9 @@
 
 #define WORLD_SIZE 2500
 #define FOOD_COUNT 1000
-#define AGENT_COUNT 1000
+
+#define AGENT_COUNT 100
+#define AGENT_HP 20
 
 #define GRID_WIDTH 50
 #define GRID_HEIGHT 50
@@ -11,7 +13,7 @@
 #define W 800
 #define H 800
 
-#define FRAME_DELAY_MS 10
+#define FRAME_DELAY_MS 100
 
 
 int main() {
@@ -39,7 +41,7 @@ int main() {
     World* world = world_new(WORLD_SIZE);
     for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
     for (int i = 0; i<AGENT_COUNT; i++){
-        WorldAgent* agent = world_agent_new();
+        WorldAgent* agent = world_agent_new(AGENT_HP);
         world_add_agent(world, agent, rand_int(WORLD_SIZE));
     }
 
