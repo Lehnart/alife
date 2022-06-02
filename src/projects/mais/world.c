@@ -65,7 +65,7 @@ void world_act_agent(World *world, WorldAgent *agent, int pos) {
 
         if (move == ACTION_EAT && *food_count > 0){
             (*food_count)--;
-            agent->hp++;
+            agent->hp+= world->food_energy;
         }
 
         WorldAgent *agent_next = world->positions[next_pos].agent;
@@ -79,7 +79,7 @@ void world_act_agent(World *world, WorldAgent *agent, int pos) {
     agent->hp--;
 }
 
-World *world_new(int size) {
+World *world_new(int size, int food_energy) {
 
     World *world = malloc(sizeof(World));
     WorldPosition *elements = malloc(sizeof(WorldPosition) * size);
@@ -91,7 +91,7 @@ World *world_new(int size) {
 
     world->size = size;
     world->positions = elements;
-
+    world->food_energy = food_energy;
     return world;
 }
 

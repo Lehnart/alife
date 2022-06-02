@@ -40,6 +40,7 @@ typedef struct WorldPosition{
 typedef struct World{
     WorldPosition* positions;
     int size;
+    int food_energy;
 } World;
 
 
@@ -48,7 +49,7 @@ WorldAgent* world_agent_new     (int hp);
 void        world_agent_delete  (WorldAgent * agent);
 void        world_agent_update  (WorldAgent* agent, World* world, int pos);
 
-World*  world_new           (int size);
+World*  world_new           (int size, int food_energy);
 void    world_update        (World* world);
 void    world_add_food      (World *world, int index);
 int     world_add_agent     (World *world, WorldAgent* agent, int index);
