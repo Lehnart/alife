@@ -7,6 +7,7 @@
 #define FOOD_ENERGY 10
 
 #define AGENT_COUNT 100
+#define AGENT_MAX_COUNT 100
 #define AGENT_HP 20
 
 #define GRID_WIDTH 50
@@ -40,7 +41,7 @@ int main() {
     int hero_texture_w, hero_texture_h;
     SDL_QueryTexture(hero_texture, NULL, NULL, &hero_texture_w, &hero_texture_h);
 
-    World* world = world_new(WORLD_SIZE, FOOD_ENERGY);
+    World* world = world_new(WORLD_SIZE, FOOD_ENERGY, AGENT_MAX_COUNT);
     for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
     for (int i = 0; i<AGENT_COUNT; i++){
         WorldAgent* agent = world_agent_new(AGENT_HP);
@@ -70,6 +71,7 @@ int main() {
                 SDL_Rect rect = {x, y, apple_texture_w, apple_texture_h};
                 SDL_RenderCopy(renderer, apple_texture, NULL, &rect);
             }
+
             if(world->positions[i].agent != NULL){
                 int x = (i % GRID_WIDTH) * (W / GRID_WIDTH);
                 int y = (i / GRID_HEIGHT) * (H / GRID_HEIGHT);

@@ -29,6 +29,7 @@ typedef struct SensorResult{
 typedef struct WorldAgent{
     Action action;
     int hp;
+    int pos;
     Action transition_rules[256];
 } WorldAgent;
 
@@ -40,6 +41,11 @@ typedef struct WorldPosition{
 typedef struct World{
     WorldPosition* positions;
     int size;
+
+    WorldAgent** agents;
+    int n_agents;
+    int n_agents_max;
+
     int food_energy;
 } World;
 
@@ -47,13 +53,14 @@ typedef struct World{
 
 WorldAgent* world_agent_new     (int hp);
 void        world_agent_delete  (WorldAgent * agent);
-void        world_agent_update  (WorldAgent* agent, World* world, int pos);
+void        world_agent_update  (WorldAgent* agent, World* world);
+void        world_act_agent     (World *world, WorldAgent* agent);
 
-World*  world_new           (int size, int food_energy);
+World*  world_new           (int size, int food_energy, int agent_count_max);
 void    world_update        (World* world);
 void    world_add_food      (World *world, int index);
 int     world_add_agent     (World *world, WorldAgent* agent, int index);
 int     world_get_position  (const World *world, int index);
-void    world_act_agent    (World *world, WorldAgent* agent, int pos);
+
 
 #endif //ALIFE_WORLD_H
