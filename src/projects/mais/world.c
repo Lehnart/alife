@@ -7,6 +7,14 @@ WorldAgent *world_agent_new(int hp) {
     WorldAgent *agent = malloc(sizeof(WorldAgent));
     agent->action = ACTION_NONE;
     agent->hp = hp;
+
+    size_t n = sizeof(agent->transition_rules)/sizeof(agent->transition_rules[0]);
+    SensorResult r;
+    for(int i = 0; i < n; i++){
+        r.result = i;
+        if(r.is_food_at_mid) agent->transition_rules[i] = ACTION_EAT;
+        else agent->transition_rules[i] = ACTION_MOVE_RIGHT;
+    }
     return agent;
 }
 
@@ -14,7 +22,9 @@ void world_agent_delete(WorldAgent * agent) {
     free(agent);
 }
 
-void world_agent_update(WorldAgent *agent, World *world, int pos) {
+SensorResult world_agent_sense(WorldAgent *agent, World *world, int pos) {
+
+    SensorResult r;
 
     int left_index = world_get_position(world, pos - 1);
     int mid_index = world_get_position(world, pos);
@@ -24,8 +34,20 @@ void world_agent_update(WorldAgent *agent, World *world, int pos) {
     WorldPosition mid_position = world->positions[mid_index];
     WorldPosition right_position = world->positions[right_index];
 
-    int r = rand_int(4);
-    agent->action = r;
+    r.is_agent_at_left  = left_position.agent == NULL ? 0 : 1;
+    r.is_agent_at_mid   = 1;
+    r.is_agent_at_right = right_position.agent == NULL ? 0 : 1;
+
+    r.is_food_at_left  = left_position.n_foods > 0 ? 1 : 0;
+    r.is_food_at_mid   = mid_position.n_foods > 0 ? 1 : 0;
+    r.is_food_at_right = right_position.n_foods > 0 ? 1 : 0;
+
+    return r;
+}
+
+void world_agent_update(WorldAgent *agent, World *world, int pos) {
+    SensorResult r = world_agent_sense(agent, world, pos);
+    agent->action = agent->transition_rules[r.result];
 }
 
 void world_act_agent(World *world, WorldAgent *agent, int pos) {
