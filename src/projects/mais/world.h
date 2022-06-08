@@ -6,6 +6,7 @@ typedef enum Action{
     ACTION_MOVE_LEFT,
     ACTION_MOVE_RIGHT,
     ACTION_EAT,
+    ACTION_REPLICATE,
     ACTION_COUNT
 } Action;
 
@@ -20,6 +21,7 @@ typedef struct SensorResult{
             unsigned int is_food_at_mid : 1;
             unsigned int is_food_at_right : 1;
 
+            unsigned int hp_left : 2;
         };
         unsigned int result;
     };
@@ -29,6 +31,7 @@ typedef struct SensorResult{
 typedef struct WorldAgent{
     Action action;
     int hp;
+    int hp_max;
     int pos;
     Action transition_rules[256];
 } WorldAgent;
@@ -51,7 +54,7 @@ typedef struct World{
 
 
 
-WorldAgent* world_agent_new     (int hp);
+WorldAgent* world_agent_new     (int hp, int hp_max);
 void        world_agent_delete  (WorldAgent * agent);
 void        world_agent_update  (WorldAgent* agent, World* world);
 void        world_act_agent     (World *world, WorldAgent* agent);
