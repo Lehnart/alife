@@ -48,6 +48,8 @@ typedef struct World{
 
     int free_energy;
     int food_energy;
+
+    double agent_emergence_probability;
 } World;
 
 
@@ -58,7 +60,7 @@ void        world_agent_decrease_hp (WorldAgent* agent, World* world, int amount
 void        world_agent_increase_hp (WorldAgent* agent, World* world, int amount);
 void        world_act_agent         (World *world, WorldAgent* agent);
 
-World*  world_new           (int size, int food_energy, int agent_count_max, int agent_hp_max);
+World*  world_new           (int size, int food_energy, int agent_count_max, int agent_hp_max, double agent_emergence_proba);
 void    world_update        (World* world);
 void    world_add_food      (World *world, int index);
 int     world_add_agent     (World *world, WorldAgent* agent, int index);

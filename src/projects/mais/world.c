@@ -26,7 +26,6 @@ void world_agent_decrease_hp(WorldAgent *agent, World *world, int amount) {
 
 void world_agent_increase_hp(WorldAgent *agent, World *world, int amount) {
     agent->hp += amount;
-    world->free_energy -= amount;
 }
 
 SensorResult world_agent_sense(WorldAgent *agent, World *world) {
@@ -83,7 +82,7 @@ void world_act_agent(World *world, WorldAgent *agent) {
     world_agent_decrease_hp(agent, world, 1);
 }
 
-World *world_new(int size, int food_energy, int agent_count_max, int agent_hp_max) {
+World *world_new(int size, int food_energy, int agent_count_max, int agent_hp_max, double agent_emergence_proba) {
 
     World *world = malloc(sizeof(World));
     WorldPosition *elements = malloc(sizeof(WorldPosition) * size);
@@ -98,6 +97,7 @@ World *world_new(int size, int food_energy, int agent_count_max, int agent_hp_ma
     world->food_energy = food_energy;
     world->free_energy = 0;
 
+    world->agent_emergence_probability = agent_emergence_proba;
     world->agents = malloc(sizeof(WorldAgent *) * agent_count_max);
     world->n_agents_max = agent_count_max;
     world->agent_hp_max = agent_hp_max;
@@ -150,22 +150,33 @@ int world_add_agent(World *world, WorldAgent *agent, int index) {
 
 
 void world_update(World *world) {
+    long sum = 0l;
+    for(int i = 0; i < world->size; i++){
+        WorldPosition position = world->positions[i];
+        sum += (long) (position.n_foods*world->food_energy);
+    }
+    printf("before sum apple %ld\n", sum);
+    printf("beofre sum free %d\n", world->free_energy);
 
-    while(world->free_energy > world->food_energy){
+    while(world->free_energy >= world->food_energy){
         world->free_energy -= world->food_energy;
         world_add_food(world, rand_int(world->size));
     }
 
+    sum = 0l;
     for(int i = 0; i < world->size; i++){
-        WorldPosition position = world->positions[i];
-        if(position.agent != NULL) continue;
+        WorldPosition *position = &world->positions[i];
+        sum += (long) (position->n_foods*world->food_energy);
+        if(position->agent != NULL) continue;
 
-        if(position.n_foods*world->food_energy >= world->agent_hp_max){
-            position.n_foods -= world->agent_hp_max/world->food_energy;
+        if(position->n_foods*world->food_energy >= world->agent_hp_max && rand_double()<world->agent_emergence_probability){
+            position->n_foods -= world->agent_hp_max/world->food_energy;
             WorldAgent *new_agent = world_agent_new( world->agent_hp_max,  world->agent_hp_max);
             world_add_agent(world, new_agent, i);
         }
     }
+    printf("after sum apple %ld\n", sum);
+    printf("after sum free %d\n", world->free_energy);
 
     for (int i = 0; i < world->n_agents_max; i++) {
         WorldAgent *agent = world->agents[i];
