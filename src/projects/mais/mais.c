@@ -3,11 +3,11 @@
 
 #define WORLD_SIZE 2500
 
-#define FOOD_COUNT 1000
-#define FOOD_ENERGY 10
+#define FOOD_COUNT 5000
+#define FOOD_ENERGY 5
 
 #define AGENT_COUNT 200
-#define AGENT_MAX_COUNT 200
+#define AGENT_MAX_COUNT 2500
 #define AGENT_HP 20
 
 #define GRID_WIDTH 50
@@ -41,12 +41,13 @@ int main() {
     int hero_texture_w, hero_texture_h;
     SDL_QueryTexture(hero_texture, NULL, NULL, &hero_texture_w, &hero_texture_h);
 
-    World* world = world_new(WORLD_SIZE, FOOD_ENERGY, AGENT_MAX_COUNT);
+    World* world = world_new(WORLD_SIZE, FOOD_ENERGY, AGENT_MAX_COUNT, AGENT_HP);
     for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
-    for (int i = 0; i<AGENT_COUNT; i++){
-        WorldAgent* agent = world_agent_new(AGENT_HP, AGENT_HP);
-        world_add_agent(world, agent, rand_int(WORLD_SIZE));
-    }
+
+//    for (int i = 0; i<AGENT_COUNT; i++){
+//        WorldAgent* agent = world_agent_new(AGENT_HP, AGENT_HP);
+//        world_add_agent(world, agent, rand_int(WORLD_SIZE));
+//    }
 
     while (is_over) {
 

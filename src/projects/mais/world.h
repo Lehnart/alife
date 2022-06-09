@@ -18,8 +18,6 @@ typedef struct SensorResult{
             unsigned int is_food_at_left : 1;
             unsigned int is_food_at_mid : 1;
             unsigned int is_food_at_right : 1;
-
-            unsigned int hp_left : 2;
         };
         unsigned int result;
     };
@@ -31,7 +29,7 @@ typedef struct WorldAgent{
     int hp;
     int hp_max;
     int pos;
-    Action transition_rules[256];
+    Action transition_rules[64];
 } WorldAgent;
 
 typedef struct WorldPosition{
@@ -46,6 +44,7 @@ typedef struct World{
     WorldAgent** agents;
     int n_agents;
     int n_agents_max;
+    int agent_hp_max;
 
     int free_energy;
     int food_energy;
@@ -54,13 +53,12 @@ typedef struct World{
 
 
 WorldAgent* world_agent_new         (int hp, int hp_max);
-void        world_agent_delete      (WorldAgent * agent);
 void        world_agent_update      (WorldAgent* agent, World* world);
 void        world_agent_decrease_hp (WorldAgent* agent, World* world, int amount);
 void        world_agent_increase_hp (WorldAgent* agent, World* world, int amount);
 void        world_act_agent         (World *world, WorldAgent* agent);
 
-World*  world_new           (int size, int food_energy, int agent_count_max);
+World*  world_new           (int size, int food_energy, int agent_count_max, int agent_hp_max);
 void    world_update        (World* world);
 void    world_add_food      (World *world, int index);
 int     world_add_agent     (World *world, WorldAgent* agent, int index);
