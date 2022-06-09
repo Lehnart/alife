@@ -19,6 +19,16 @@ WorldAgent *world_agent_new(int hp, int hp_max) {
     return agent;
 }
 
+void world_agent_decrease_hp(WorldAgent *agent, World *world, int amount) {
+    agent->hp -= amount;
+    world->free_energy += amount;
+}
+
+void world_agent_increase_hp(WorldAgent *agent, World *world, int amount) {
+    agent->hp += amount;
+    world->free_energy -= amount;
+}
+
 void world_agent_delete(WorldAgent *agent) {
     free(agent);
 }
@@ -58,30 +68,6 @@ void world_act_agent(World *world, WorldAgent *agent) {
     if (agent->action == ACTION_NONE) return;
 
     int agent_pos = agent->pos;
-
-    if (agent->action == ACTION_REPLICATE){
-        int left_pos = world_get_position(world, agent_pos - 1);
-        int right_pos = world_get_position(world, agent_pos + 1);
-
-        if (world->positions[left_pos].agent != NULL) return;
-        if (world->positions[right_pos].agent != NULL) return;
-
-        int total_hp = agent->hp;
-        world->positions[left_pos].agent = agent;
-
-        agent->hp = total_hp/2;
-        agent->action = ACTION_NONE;
-        agent->pos = left_pos;
-
-        world->positions[agent_pos].agent = NULL;
-
-        WorldAgent * new_agent = world_agent_new(total_hp - agent->hp, agent->hp_max);
-        world_add_agent(world, new_agent, right_pos);
-
-        return;
-    }
-
-    int *food_count = &world->positions[agent_pos].n_foods;
     WorldAgent *agent_at_pos = world->positions[agent_pos].agent;
     Action move = agent->action;
 
@@ -89,11 +75,6 @@ void world_act_agent(World *world, WorldAgent *agent) {
         int next_pos = agent_pos;
         if (move == ACTION_MOVE_LEFT) next_pos = world_get_position(world, agent_pos - 1);
         if (move == ACTION_MOVE_RIGHT) next_pos = world_get_position(world, agent_pos + 1);
-
-        if (move == ACTION_EAT && *food_count > 0) {
-            (*food_count)--;
-            agent->hp += world->food_energy;
-        }
 
         WorldAgent *agent_next = world->positions[next_pos].agent;
         if (agent_next == NULL) {
@@ -104,7 +85,7 @@ void world_act_agent(World *world, WorldAgent *agent) {
     }
 
     agent->action = ACTION_NONE;
-    agent->hp--;
+    world_agent_decrease_hp(agent, world, 1);
 }
 
 World *world_new(int size, int food_energy, int agent_count_max) {
@@ -120,6 +101,7 @@ World *world_new(int size, int food_energy, int agent_count_max) {
     world->size = size;
     world->positions = elements;
     world->food_energy = food_energy;
+    world->free_energy = 0;
 
     world->agents = malloc(sizeof(WorldAgent *) * agent_count_max);
     world->n_agents_max = agent_count_max;
@@ -154,8 +136,8 @@ int world_add_agent(World *world, WorldAgent *agent, int index) {
     int pos = world_get_position(world, index);
     if (world->positions[pos].agent == NULL) {
 
-        for(int i = 0; i < world->n_agents_max; i++){
-            if(world->agents[i] == NULL){
+        for (int i = 0; i < world->n_agents_max; i++) {
+            if (world->agents[i] == NULL) {
                 world->agents[i] = agent;
                 break;
             }
@@ -181,7 +163,7 @@ void world_update(World *world) {
         WorldAgent *agent = world->agents[i];
         if (agent != NULL) {
             world_act_agent(world, agent);
-            agent->hp--;
+            world_agent_decrease_hp(agent, world, 1);
         }
     }
 
@@ -194,6 +176,42 @@ void world_update(World *world) {
                 free(agent);
                 world->n_agents--;
             }
+        }
+    }
+
+    for (int i = 0; i < world->n_agents_max; i++) {
+        WorldAgent *agent = world->agents[i];
+        if (agent != NULL) {
+            int agent_pos = agent->pos;
+            int *food_count = &world->positions[agent_pos].n_foods;
+            if (*food_count > 0) {
+                (*food_count)--;
+                world_agent_increase_hp(agent, world, world->food_energy);
+            }
+        }
+    }
+
+    for (int i = 0; i < world->n_agents_max; i++) {
+        WorldAgent *agent = world->agents[i];
+        if (agent != NULL && agent->hp > agent->hp_max) {
+            int agent_pos = agent->pos;
+            int left_pos = world_get_position(world, agent_pos - 1);
+            int right_pos = world_get_position(world, agent_pos + 1);
+
+            if (world->positions[left_pos].agent != NULL) continue;
+            if (world->positions[right_pos].agent != NULL) continue;
+
+            int total_hp = agent->hp;
+            world->positions[left_pos].agent = agent;
+
+            agent->hp = total_hp / 2;
+            agent->action = ACTION_NONE;
+            agent->pos = left_pos;
+
+            world->positions[agent_pos].agent = NULL;
+
+            WorldAgent *new_agent = world_agent_new(total_hp - agent->hp, agent->hp_max);
+            world_add_agent(world, new_agent, right_pos);
         }
     }
 }

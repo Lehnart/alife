@@ -6,7 +6,7 @@
 #define FOOD_COUNT 1000
 #define FOOD_ENERGY 10
 
-#define AGENT_COUNT 100
+#define AGENT_COUNT 200
 #define AGENT_MAX_COUNT 200
 #define AGENT_HP 20
 

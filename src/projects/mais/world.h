@@ -5,8 +5,6 @@ typedef enum Action{
     ACTION_NONE,
     ACTION_MOVE_LEFT,
     ACTION_MOVE_RIGHT,
-    ACTION_EAT,
-    ACTION_REPLICATE,
     ACTION_COUNT
 } Action;
 
@@ -49,15 +47,18 @@ typedef struct World{
     int n_agents;
     int n_agents_max;
 
+    int free_energy;
     int food_energy;
 } World;
 
 
 
-WorldAgent* world_agent_new     (int hp, int hp_max);
-void        world_agent_delete  (WorldAgent * agent);
-void        world_agent_update  (WorldAgent* agent, World* world);
-void        world_act_agent     (World *world, WorldAgent* agent);
+WorldAgent* world_agent_new         (int hp, int hp_max);
+void        world_agent_delete      (WorldAgent * agent);
+void        world_agent_update      (WorldAgent* agent, World* world);
+void        world_agent_decrease_hp (WorldAgent* agent, World* world, int amount);
+void        world_agent_increase_hp (WorldAgent* agent, World* world, int amount);
+void        world_act_agent         (World *world, WorldAgent* agent);
 
 World*  world_new           (int size, int food_energy, int agent_count_max);
 void    world_update        (World* world);
