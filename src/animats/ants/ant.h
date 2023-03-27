@@ -23,7 +23,7 @@
 #define HOME_POS_X 200
 #define HOME_POS_Y 100
 
-typedef struct Ant{
+typedef struct Ant {
     float x;
     float y;
 
@@ -36,18 +36,19 @@ typedef struct Ant{
     bool is_carrying;
 } Ant;
 
-typedef struct AntInteraction{
+typedef struct AntInteraction {
     bool seek;
     bool cohesion;
     bool alignment;
     bool collision;
 } AntInteraction;
 
-Ant* ant_new(float max_x, float max_y);
+Ant *ant_new(float max_x, float max_y);
 
-float ant_angle(Ant* ant);
+float ant_angle(Ant *ant);
 
-void ant_update(Ant* ant, float dt, float min_x, float min_y, float max_x, float max_y);
-AntInteraction ant_interact(Ant* ant, Ant** ants, int n_ant, int current_ant_index);
+void ant_update(Ant *ant, float dt, float min_x, float min_y, float max_x, float max_y);
+
+AntInteraction ant_interact(Ant *ant, Ant **ants, int n_ant, int current_ant_index);
 
 #endif //ALIFE_ANT_H

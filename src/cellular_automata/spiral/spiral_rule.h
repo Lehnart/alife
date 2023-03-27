@@ -3,20 +3,21 @@
 
 #include "../../tools/cell_array.h"
 
-typedef struct{
+typedef struct {
     float decay_proba;
     float claim_empty;
     float claim_cell;
     float claim_hyper;
 
-    int   state_count;
-    int*  catalytic_states;
+    int state_count;
+    int *catalytic_states;
 
-    float*  catalytic_probas;
+    float *catalytic_probas;
 } SpiralRule;
 
 
-int apply(const SpiralRule * pRule, const CellNeighborhood *pN);
-void evolve(CellArray* pCA, const SpiralRule* pRule);
+int apply(const SpiralRule *pRule, const CellNeighborhood *pN);
+
+void evolve(CellArray *pCA, const SpiralRule *pRule);
 
 #endif //ALIFE_SPIRAL_RULE_H

@@ -21,16 +21,16 @@ int main() {
 
     struct timeval te;
     gettimeofday(&te, NULL); // get current time
-    long long m1 = te.tv_usec/1000;
+    long long m1 = te.tv_usec / 1000;
     gettimeofday(&te, NULL); // get current time
-    long long m2 = te.tv_usec/1000;
+    long long m2 = te.tv_usec / 1000;
     gettimeofday(&te, NULL); // get current time
-    long long m3 = te.tv_usec/1000;
-    rand_seed(m1,m2,m3);
+    long long m3 = te.tv_usec / 1000;
+    rand_seed(m1, m2, m3);
 
-    World *world = world_new(W/ATOM_SIZE,H/ATOM_SIZE);
-    Atom* atoms[ATOM_COUNT];
-    for(int i = 0; i < ATOM_COUNT; i++){ atoms[i]=atom_new(W/ATOM_SIZE/2, H/ATOM_SIZE/2, ATOM_CARBON); }
+    World *world = world_new(W / ATOM_SIZE, H / ATOM_SIZE);
+    Atom *atoms[ATOM_COUNT];
+    for (int i = 0; i < ATOM_COUNT; i++) { atoms[i] = atom_new(W / ATOM_SIZE / 2, H / ATOM_SIZE / 2, ATOM_CARBON); }
 
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
@@ -51,36 +51,36 @@ int main() {
         SDL_Rect rect;
         int atom_count;
         int color;
-        for(int i =0 ; i < world->width; i++){
-            for(int j=0; j < world->height; j++){
+        for (int i = 0; i < world->width; i++) {
+            for (int j = 0; j < world->height; j++) {
                 atom_count = world_get(world, i, j, ATOM_CARBON);
-                if(atom_count > 0){
+                if (atom_count > 0) {
                     atom_count = atom_count > 2 ? 2 : atom_count;
                     color = (256 / 2 * atom_count) - 1;
-                    rect.x = i*ATOM_SIZE;
-                    rect.y = j*ATOM_SIZE;
+                    rect.x = i * ATOM_SIZE;
+                    rect.y = j * ATOM_SIZE;
                     rect.w = ATOM_SIZE;
                     rect.h = ATOM_SIZE;
                     SDL_SetRenderDrawColor(renderer, color, 0, 0, 255);
                     SDL_RenderFillRect(renderer, &rect);
                 }
                 atom_count = world_get(world, i, j, ATOM_ENERGY);
-                if(atom_count > 0){
+                if (atom_count > 0) {
                     atom_count = atom_count > 2 ? 2 : atom_count;
                     color = (256 / 2 * atom_count) - 1;
-                    rect.x = i*ATOM_SIZE;
-                    rect.y = j*ATOM_SIZE;
+                    rect.x = i * ATOM_SIZE;
+                    rect.y = j * ATOM_SIZE;
                     rect.w = ATOM_SIZE;
                     rect.h = ATOM_SIZE;
                     SDL_SetRenderDrawColor(renderer, 0, color, 0, 255);
                     SDL_RenderFillRect(renderer, &rect);
                 }
                 atom_count = world_get(world, i, j, ATOM_DICARBON);
-                if(atom_count > 0){
+                if (atom_count > 0) {
                     atom_count = atom_count > 2 ? 2 : atom_count;
                     color = (256 / 2 * atom_count) - 1;
-                    rect.x = i*ATOM_SIZE;
-                    rect.y = j*ATOM_SIZE;
+                    rect.x = i * ATOM_SIZE;
+                    rect.y = j * ATOM_SIZE;
                     rect.w = ATOM_SIZE;
                     rect.h = ATOM_SIZE;
                     SDL_SetRenderDrawColor(renderer, 0, 0, color, 255);
@@ -93,7 +93,7 @@ int main() {
         SDL_UpdateWindowSurface(window);
 
         world_reset(world);
-        for(int i = 0; i <ATOM_COUNT; i++) atom_update(atoms[i], world);
+        for (int i = 0; i < ATOM_COUNT; i++) atom_update(atoms[i], world);
         world_update(world, atoms, ATOM_COUNT);
 
         Uint32 delay = (SDL_GetTicks() - ticks);

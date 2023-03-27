@@ -3,7 +3,7 @@
 
 #define WORLD_SIZE 2500
 
-#define FOOD_COUNT 2500
+#define FOOD_COUNT 5000
 #define FOOD_ENERGY 5
 
 #define AGENT_COUNT 200
@@ -32,18 +32,18 @@ int main() {
     Uint32 ticks = SDL_GetTicks();
     int is_over = 1;
 
-    SDL_Surface* apple_image = SDL_LoadBMP("res/apple.bmp");
-    SDL_Texture * apple_texture = SDL_CreateTextureFromSurface(renderer, apple_image);
+    SDL_Surface *apple_image = SDL_LoadBMP("res/apple.bmp");
+    SDL_Texture *apple_texture = SDL_CreateTextureFromSurface(renderer, apple_image);
     int apple_texture_w, apple_texture_h;
     SDL_QueryTexture(apple_texture, NULL, NULL, &apple_texture_w, &apple_texture_h);
 
-    SDL_Surface* hero_image = SDL_LoadBMP("res/hero.bmp");
-    SDL_Texture * hero_texture = SDL_CreateTextureFromSurface(renderer, hero_image);
+    SDL_Surface *hero_image = SDL_LoadBMP("res/hero.bmp");
+    SDL_Texture *hero_texture = SDL_CreateTextureFromSurface(renderer, hero_image);
     int hero_texture_w, hero_texture_h;
     SDL_QueryTexture(hero_texture, NULL, NULL, &hero_texture_w, &hero_texture_h);
 
-    World* world = world_new(WORLD_SIZE, FOOD_ENERGY, AGENT_MAX_COUNT, AGENT_HP, AGENT_EMERGENCE_PROBA);
-    for (int i = 0; i<FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
+    World *world = world_new(WORLD_SIZE, FOOD_ENERGY, AGENT_MAX_COUNT, AGENT_HP, AGENT_EMERGENCE_PROBA);
+    for (int i = 0; i < FOOD_COUNT; i++) world_add_food(world, rand_int(WORLD_SIZE));
 
 //    for (int i = 0; i<AGENT_COUNT; i++){
 //        WorldAgent* agent = world_agent_new(AGENT_HP, AGENT_HP);
@@ -66,16 +66,16 @@ int main() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
 
-        for(int i = 0; i < world->size; i++){
+        for (int i = 0; i < world->size; i++) {
 
-            if(world->positions[i].n_foods != 0) {
+            if (world->positions[i].n_foods != 0) {
                 int x = i % GRID_WIDTH * (W / GRID_WIDTH);
                 int y = i / GRID_HEIGHT * (H / GRID_HEIGHT);
                 SDL_Rect rect = {x, y, apple_texture_w, apple_texture_h};
                 SDL_RenderCopy(renderer, apple_texture, NULL, &rect);
             }
 
-            if(world->positions[i].agent != NULL){
+            if (world->positions[i].agent != NULL) {
                 int x = (i % GRID_WIDTH) * (W / GRID_WIDTH);
                 int y = (i / GRID_HEIGHT) * (H / GRID_HEIGHT);
                 SDL_Rect rect = {x, y, hero_texture_w, hero_texture_h};

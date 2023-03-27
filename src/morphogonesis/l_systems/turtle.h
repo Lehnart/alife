@@ -28,15 +28,15 @@ typedef struct {
     int height;
     SDL_PixelFormat *format;
 
-    Turtle* turtle;
-    Turtle** backup_turtles;
+    Turtle *turtle;
+    Turtle **backup_turtles;
     int backup_turtle_index;
 } TurtlePainter;
 
 
-TurtlePainter * turtle_new(Uint32* pixels, int width, int height, SDL_PixelFormat* format);
+TurtlePainter *turtle_new(Uint32 *pixels, int width, int height, SDL_PixelFormat *format);
 
-void turtle_set_pixels(TurtlePainter *turtle_painter, Uint32* pixels, int width, int height, SDL_PixelFormat* format);
+void turtle_set_pixels(TurtlePainter *turtle_painter, Uint32 *pixels, int width, int height, SDL_PixelFormat *format);
 
 void turtle_delete(TurtlePainter *turtle);
 

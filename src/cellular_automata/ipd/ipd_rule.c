@@ -23,12 +23,12 @@ void add_to_memory(int *memory, int my_move, int p2_move) {
     memory[1] = p2_move;
 }
 
-int get_move(const IPDGame * pGame, const int *memory, int memory_size, int state) {
+int get_move(const IPDGame *pGame, const int *memory, int memory_size, int state) {
 
-    int move_index = (memory[0]<<1) + memory[1];
+    int move_index = (memory[0] << 1) + memory[1];
     int move = pGame->pCodes->state_to_code[state].mem_to_move[move_index];
 
-    if (rand_double() < pGame->pRule->error_proba){
+    if (rand_double() < pGame->pRule->error_proba) {
         move++;
         move %= 2;
     }
@@ -86,8 +86,8 @@ void evolve(CellArray *pCA, const IPDRule *pRule) {
     IPDGame game = {
             pRule,
             create(pRule->memory_size, pRule->state_count),
-            malloc(pRule->memory_size*sizeof(int)),
-            malloc(pRule->memory_size*sizeof(int))
+            malloc(pRule->memory_size * sizeof(int)),
+            malloc(pRule->memory_size * sizeof(int))
     };
 
     for (int y = 0; y < pCA->h; y++) {

@@ -151,27 +151,27 @@ int world_add_agent(World *world, WorldAgent *agent, int index) {
 
 void world_update(World *world) {
     long sum = 0l;
-    for(int i = 0; i < world->size; i++){
+    for (int i = 0; i < world->size; i++) {
         WorldPosition position = world->positions[i];
-        sum += (long) (position.n_foods*world->food_energy);
+        sum += (long) (position.n_foods * world->food_energy);
     }
     printf("before sum apple %ld\n", sum);
     printf("beofre sum free %d\n", world->free_energy);
 
-    while(world->free_energy >= world->food_energy){
+    while (world->free_energy >= world->food_energy) {
         world->free_energy -= world->food_energy;
         world_add_food(world, rand_int(world->size));
     }
 
     sum = 0l;
-    for(int i = 0; i < world->size; i++){
+    for (int i = 0; i < world->size; i++) {
         WorldPosition *position = &world->positions[i];
-        sum += (long) (position->n_foods*world->food_energy);
-        if(position->agent != NULL) continue;
+        sum += (long) (position->n_foods * world->food_energy);
+        if (position->agent != NULL) continue;
 
-        if(position->n_foods*world->food_energy >= world->agent_hp_max && rand_double()<world->agent_emergence_probability){
-            position->n_foods -= world->agent_hp_max/world->food_energy;
-            WorldAgent *new_agent = world_agent_new( world->agent_hp_max,  world->agent_hp_max);
+        if (position->n_foods * world->food_energy >= world->agent_hp_max && rand_double() < world->agent_emergence_probability) {
+            position->n_foods -= world->agent_hp_max / world->food_energy;
+            WorldAgent *new_agent = world_agent_new(world->agent_hp_max, world->agent_hp_max);
             world_add_agent(world, new_agent, i);
         }
     }

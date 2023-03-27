@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "cell_array.h"
 
 /**
@@ -9,16 +10,19 @@
  */
 CellArray *ca_create(int w, int h) {
 
-    int *p_array = (int *) malloc(sizeof(int) * (w * h));
+    int *array = (int *) malloc(sizeof(int) * (w * h));
+    int *temp_array = (int *) malloc(sizeof(int) * (w * h));
 
     CellArray *p_cell_array = (CellArray *) malloc(sizeof(CellArray));
     p_cell_array->w = w;
     p_cell_array->h = h;
-    p_cell_array->array = p_array;
+    p_cell_array->array = array;
+    p_cell_array->temp_array = temp_array;
 
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
-            p_array[x + (w * y)] = 0;
+            array[x + (w * y)] = 0;
+            temp_array[x + (w * y)] = 0;
         }
     }
 
@@ -27,13 +31,32 @@ CellArray *ca_create(int w, int h) {
 
 /**
  */
-void ca_reset(CellArray* ca) {
+void ca_reset(CellArray *ca) {
     for (int y = 0; y < ca->h; y++) {
         for (int x = 0; x < ca->w; x++) {
             ca->array[x + (ca->w * y)] = 0;
         }
     }
 }
+
+/**
+ */
+void ca_init_from_file(CellArray *ca, char *filename) {
+    FILE *array_file = fopen(filename, "r");
+    int index = 0;
+    int c;
+    c = fgetc(array_file);
+    while (c != '\0' && c != -1) {
+
+        if (c >= '0' && c <= '9') {
+            ca->array[index] = (c - '0');
+            index++;
+        }
+        c = fgetc(array_file);
+    }
+    fclose(array_file);
+}
+
 
 /**
  * Create a new 2D grid array with state initialized to random values, accordingly to given probabilities
@@ -129,4 +152,26 @@ CellNeighborhood ca_get_neighborhood(const CellArray *ca, int x, int y) {
     cn.br = ca_get(ca, x + 1, y + 1);
 
     return cn;
+}
+
+void ca_evolve(CellArray *ca, CellArrayRule *ca_rule) {
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            CellNeighborhood cn = ca_get_neighborhood(ca, x, y);
+            int s = 0;
+            s += cn.m * 10000;
+            s += cn.t * 1000;
+            s += cn.r * 100;
+            s += cn.b * 10;
+            s += cn.l * 1;
+
+            ca->temp_array[x + (ca->w * y)] = ca_rule->rule_map[s];
+        }
+    }
+
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            ca->array[x + (ca->w * y)] = ca->temp_array[x + (ca->w * y)];
+        }
+    }
 }

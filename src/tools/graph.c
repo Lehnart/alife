@@ -28,7 +28,7 @@ Node *graph_add_head(Graph *graph, void *data) {
     return node;
 }
 
-Edge *graph_add_edge(Graph* graph, Node* src, Node* dest, void* data){
+Edge *graph_add_edge(Graph *graph, Node *src, Node *dest, void *data) {
     Edge *edge = malloc(sizeof(Edge));
     edge->data = data;
     edge->src = src;
@@ -36,15 +36,15 @@ Edge *graph_add_edge(Graph* graph, Node* src, Node* dest, void* data){
     edge->id = graph->edges->size;
     array_append(graph->edges, edge);
 
-    if (dest != NULL) array_append( dest->inputs, edge );
-    if (src != NULL) array_append( src->outputs, edge );
+    if (dest != NULL) array_append(dest->inputs, edge);
+    if (src != NULL) array_append(src->outputs, edge);
     return edge;
 }
 
-Node* graph_get_node(Graph *graph, unsigned int id) {
+Node *graph_get_node(Graph *graph, unsigned int id) {
     void *ptr = array_get(graph->nodes, id);
-    if (ptr != NULL){
-        Node* node = (Node*) ptr;
+    if (ptr != NULL) {
+        Node *node = (Node *) ptr;
         return node;
     }
     return NULL;

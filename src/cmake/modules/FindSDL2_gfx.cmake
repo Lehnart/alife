@@ -112,18 +112,18 @@ Original FindSDL_image.cmake module:
 
 # SDL2 Library required
 find_package(SDL2 QUIET)
-if(NOT SDL2_FOUND)
+if (NOT SDL2_FOUND)
     set(SDL2_GFX_SDL2_NOT_FOUND "Could NOT find SDL2 (SDL2 is required by SDL2_gfx).")
-    if(SDL2_gfx_FIND_REQUIRED)
+    if (SDL2_gfx_FIND_REQUIRED)
         message(FATAL_ERROR ${SDL2_GFX_SDL2_NOT_FOUND})
-    else()
-        if(NOT SDL2_gfx_FIND_QUIETLY)
+    else ()
+        if (NOT SDL2_gfx_FIND_QUIETLY)
             message(STATUS ${SDL2_GFX_SDL2_NOT_FOUND})
-        endif()
+        endif ()
         return()
-    endif()
+    endif ()
     unset(SDL2_GFX_SDL2_NOT_FOUND)
-endif()
+endif ()
 
 
 # Define options for searching SDL2_gfx Library in a custom path
@@ -131,18 +131,18 @@ endif()
 set(SDL2_GFX_PATH "" CACHE STRING "Custom SDL2_gfx Library path")
 
 set(_SDL2_GFX_NO_DEFAULT_PATH OFF)
-if(SDL2_GFX_PATH)
+if (SDL2_GFX_PATH)
     set(_SDL2_GFX_NO_DEFAULT_PATH ON)
-endif()
+endif ()
 
 set(SDL2_GFX_NO_DEFAULT_PATH ${_SDL2_GFX_NO_DEFAULT_PATH}
         CACHE BOOL "Disable search SDL2_gfx Library in default path")
 unset(_SDL2_GFX_NO_DEFAULT_PATH)
 
 set(SDL2_GFX_NO_DEFAULT_PATH_CMD)
-if(SDL2_GFX_NO_DEFAULT_PATH)
+if (SDL2_GFX_NO_DEFAULT_PATH)
     set(SDL2_GFX_NO_DEFAULT_PATH_CMD NO_DEFAULT_PATH)
-endif()
+endif ()
 
 # Search for the SDL2_gfx include directory
 find_path(SDL2_GFX_INCLUDE_DIR SDL2_gfxPrimitives.h
@@ -158,11 +158,11 @@ find_path(SDL2_GFX_INCLUDE_DIR SDL2_gfxPrimitives.h
         DOC "Where the SDL2_gfx headers can be found"
         )
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(VC_LIB_PATH_SUFFIX lib/x64)
-else()
+else ()
     set(VC_LIB_PATH_SUFFIX lib/x86)
-endif()
+endif ()
 
 # Search for the SDL2_gfx library
 find_library(SDL2_GFX_LIBRARY
@@ -177,7 +177,7 @@ find_library(SDL2_GFX_LIBRARY
         )
 
 # Read SDL2_gfx version
-if(SDL2_GFX_INCLUDE_DIR AND EXISTS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h")
+if (SDL2_GFX_INCLUDE_DIR AND EXISTS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h")
     file(STRINGS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h" SDL2_GFX_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL2_GFXPRIMITIVES_MAJOR[ \t]+[0-9]+$")
     file(STRINGS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h" SDL2_GFX_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL2_GFXPRIMITIVES_MINOR[ \t]+[0-9]+$")
     file(STRINGS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h" SDL2_GFX_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL2_GFXPRIMITIVES_MICRO[ \t]+[0-9]+$")
@@ -191,7 +191,7 @@ if(SDL2_GFX_INCLUDE_DIR AND EXISTS "${SDL2_GFX_INCLUDE_DIR}/SDL2_gfxPrimitives.h
     unset(SDL2_GFX_VERSION_MAJOR)
     unset(SDL2_GFX_VERSION_MINOR)
     unset(SDL2_GFX_VERSION_PATCH)
-endif()
+endif ()
 
 set(SDL2_GFX_LIBRARIES ${SDL2_GFX_LIBRARY})
 set(SDL2_GFX_INCLUDE_DIRS ${SDL2_GFX_INCLUDE_DIR})
@@ -209,14 +209,14 @@ mark_as_advanced(SDL2_GFX_PATH
         SDL2_GFX_INCLUDE_DIR)
 
 
-if(SDL2_GFX_FOUND)
+if (SDL2_GFX_FOUND)
 
     # SDL2::GFX target
-    if(SDL2_GFX_LIBRARY AND NOT TARGET SDL2::GFX)
+    if (SDL2_GFX_LIBRARY AND NOT TARGET SDL2::GFX)
         add_library(SDL2::GFX UNKNOWN IMPORTED)
         set_target_properties(SDL2::GFX PROPERTIES
                 IMPORTED_LOCATION "${SDL2_GFX_LIBRARY}"
                 INTERFACE_INCLUDE_DIRECTORIES "${SDL2_GFX_INCLUDE_DIR}"
                 INTERFACE_LINK_LIBRARIES SDL2::Core)
-    endif()
-endif()
+    endif ()
+endif ()

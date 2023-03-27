@@ -30,56 +30,56 @@
 #define FRAME_DELAY_MS 50
 
 int one_array[CHAR_H][CHAR_W] = {
-        { 0,  0,  1,  1},
-        { 0,  1,  0,  1},
-        { 1,  0,  0,  1},
-        { 0,  0,  0,  1},
-        { 0,  0,  0,  1},
-        { 0,  0,  0,  1},
-        { 0,  0,  0,  1},
-        { 0,  0,  0,  1},
+        {0, 0, 1, 1},
+        {0, 1, 0, 1},
+        {1, 0, 0, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 1},
 };
 
 int zero_array[CHAR_H][CHAR_W] = {
-        { 0,  1,  1,  0},
-        { 1,  0,  0,  1},
-        { 1,  0,  0,  1},
-        { 1,  0,  0,  1},
-        { 1,  0,  0,  1},
-        { 1,  0,  0,  1},
-        { 1,  0,  0,  1},
-        { 0,  1,  1,  0},
+        {0, 1, 1, 0},
+        {1, 0, 0, 1},
+        {1, 0, 0, 1},
+        {1, 0, 0, 1},
+        {1, 0, 0, 1},
+        {1, 0, 0, 1},
+        {1, 0, 0, 1},
+        {0, 1, 1, 0},
 };
 
-void draw_char(Uint32 *pixels, SDL_PixelFormat *format, int x0, int y0, int is_one){
-    for (int x = x0; x < x0+CHAR_W; x++) {
-        for (int y = y0; y < y0+CHAR_H; y++){
-            int w = zero_array[y-y0][x-x0];
-            if (is_one){
-                w=one_array[y-y0][x-x0];
+void draw_char(Uint32 *pixels, SDL_PixelFormat *format, int x0, int y0, int is_one) {
+    for (int x = x0; x < x0 + CHAR_W; x++) {
+        for (int y = y0; y < y0 + CHAR_H; y++) {
+            int w = zero_array[y - y0][x - x0];
+            if (is_one) {
+                w = one_array[y - y0][x - x0];
             }
-            pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(format, 128*w, 128*w, 128*w, 255);
+            pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(format, 128 * w, 128 * w, 128 * w, 255);
         }
     }
 }
 
-void draw_bar(Uint32 *pixels, SDL_PixelFormat *format, int x0, int y0, long sum, long total){
+void draw_bar(Uint32 *pixels, SDL_PixelFormat *format, int x0, int y0, long sum, long total) {
 
     double length = (double) sum / (double) total;
-    int length_int = (int) (length*BAR_MAX_W);
+    int length_int = (int) (length * BAR_MAX_W);
 
-    for (int x = x0; x < x0+BAR_MAX_W; x++) {
-        for (int y = y0; y < y0+BAR_H; y++){
-            if ((x-x0) < length_int) pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(format, 128, 128, 128, 255);
+    for (int x = x0; x < x0 + BAR_MAX_W; x++) {
+        for (int y = y0; y < y0 + BAR_H; y++) {
+            if ((x - x0) < length_int) pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(format, 128, 128, 128, 255);
             else pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(format, 0, 0, 0, 255);
         }
     }
 }
 
-void draw_legend(const CellArray* pCA, SDL_Surface *p_surf, const int *r, const int *g, const int *b) {
+void draw_legend(const CellArray *pCA, SDL_Surface *p_surf, const int *r, const int *g, const int *b) {
 
     long state_count[STATE_COUNT];
-    for(int i=0; i<STATE_COUNT; i++) state_count[i]=0;
+    for (int i = 0; i < STATE_COUNT; i++) state_count[i] = 0;
     for (int i = 0; i < GRID_W; i++) {
         for (int j = 0; j < GRID_H; j++) {
             int s = ca_get(pCA, i, j);
@@ -92,14 +92,14 @@ void draw_legend(const CellArray* pCA, SDL_Surface *p_surf, const int *r, const 
     Uint32 *pixels = (Uint32 *) p_surf->pixels;
 
     for (int i = 0; i < STATE_COUNT; i++) {
-        for (int x = GRID_W+LEGEND_X_OFFSET; x < GRID_W+LEGEND_X_OFFSET+LEGEND_RECT_W; x++) {
-            for (int y = i*(LEGEND_RECT_H+LEGEND_Y_OFFSET)+LEGEND_Y_OFFSET; y < (i*(LEGEND_RECT_H+LEGEND_Y_OFFSET))+ LEGEND_Y_OFFSET + LEGEND_RECT_H; y++){
+        for (int x = GRID_W + LEGEND_X_OFFSET; x < GRID_W + LEGEND_X_OFFSET + LEGEND_RECT_W; x++) {
+            for (int y = i * (LEGEND_RECT_H + LEGEND_Y_OFFSET) + LEGEND_Y_OFFSET; y < (i * (LEGEND_RECT_H + LEGEND_Y_OFFSET)) + LEGEND_Y_OFFSET + LEGEND_RECT_H; y++) {
                 pixels[x + (y * WINDOW_W)] = SDL_MapRGBA(p_surf->format, r[i], g[i], b[i], 255);
             }
         }
 
-        int x0 = GRID_W+LEGEND_X_OFFSET+LEGEND_RECT_W;
-        int y0 =  i*(LEGEND_RECT_H+LEGEND_Y_OFFSET)+LEGEND_Y_OFFSET + CHAR_Y_OFFSET;
+        int x0 = GRID_W + LEGEND_X_OFFSET + LEGEND_RECT_W;
+        int y0 = i * (LEGEND_RECT_H + LEGEND_Y_OFFSET) + LEGEND_Y_OFFSET + CHAR_Y_OFFSET;
 
 
         draw_char(pixels, p_surf->format, x0 + CHAR_X_OFFSET, y0, i & 8);
@@ -107,7 +107,7 @@ void draw_legend(const CellArray* pCA, SDL_Surface *p_surf, const int *r, const 
         draw_char(pixels, p_surf->format, x0 + (CHAR_X_OFFSET * 3) + (CHAR_W * 2), y0, i & 2);
         draw_char(pixels, p_surf->format, x0 + (CHAR_X_OFFSET * 4) + (CHAR_W * 3), y0, i & 1);
 
-        draw_bar(pixels, p_surf->format, GRID_W+LEGEND_X_OFFSET,  (i*(LEGEND_RECT_H+LEGEND_Y_OFFSET))+ LEGEND_Y_OFFSET + LEGEND_RECT_H, state_count[i], GRID_W*GRID_W);
+        draw_bar(pixels, p_surf->format, GRID_W + LEGEND_X_OFFSET, (i * (LEGEND_RECT_H + LEGEND_Y_OFFSET)) + LEGEND_Y_OFFSET + LEGEND_RECT_H, state_count[i], GRID_W * GRID_W);
 
     }
     SDL_UnlockSurface(p_surf);

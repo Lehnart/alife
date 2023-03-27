@@ -18,8 +18,7 @@
 #define BIRD_COHESION_ACCELERATION 10.f
 
 
-
-typedef struct Triangle{
+typedef struct Triangle {
     float x1;
     float y1;
     float x2;
@@ -39,15 +38,18 @@ typedef struct Bird {
 
 } Bird;
 
-typedef struct BirdInteraction{
+typedef struct BirdInteraction {
     bool cohesion;
     bool alignment;
     bool collision;
 } BirdInteraction;
 
-Bird*                   bird_new(float max_x, float max_y, float max_v);
-void                    bird_update(Bird* bird, float dt, float min_x, float min_y, float max_x, float max_y);
-BirdInteraction         bird_interact(Bird* bird, Bird** birds, int n_bird, int current_bird_index);
-Triangle                bird_get_triangle(Bird* bird);
+Bird *bird_new(float max_x, float max_y, float max_v);
+
+void bird_update(Bird *bird, float dt, float min_x, float min_y, float max_x, float max_y);
+
+BirdInteraction bird_interact(Bird *bird, Bird **birds, int n_bird, int current_bird_index);
+
+Triangle bird_get_triangle(Bird *bird);
 
 #endif //ALIFE_BIRD_H

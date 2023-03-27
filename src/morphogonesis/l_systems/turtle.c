@@ -11,14 +11,14 @@
 #define PI 3.141592653589793
 
 void turtle_draw_pixel(TurtlePainter *turtle_painter, int x, int y) {
-    Turtle * turtle = turtle_painter->turtle;
+    Turtle *turtle = turtle_painter->turtle;
     turtle_painter->pixels[x + (y * turtle_painter->width)] = SDL_MapRGBA(
             turtle_painter->format,
             turtle->pen_color.red,
             turtle->pen_color.green,
             turtle->pen_color.blue,
             255
-            );
+    );
 }
 
 
@@ -61,18 +61,18 @@ void turtle_draw_line(TurtlePainter *turtle_painter, int x0, int y0, int x1, int
     }
 }
 
-void turtle_set_pixels(TurtlePainter *turtle_painter, Uint32* pixels, int width, int height, SDL_PixelFormat* format){
+void turtle_set_pixels(TurtlePainter *turtle_painter, Uint32 *pixels, int width, int height, SDL_PixelFormat *format) {
     turtle_painter->pixels = pixels;
     turtle_painter->width = width;
     turtle_painter->height = height;
     turtle_painter->format = format;
 }
 
-TurtlePainter * turtle_new(Uint32* pixels, int width, int height, SDL_PixelFormat* format) {
+TurtlePainter *turtle_new(Uint32 *pixels, int width, int height, SDL_PixelFormat *format) {
     Turtle *turtle = malloc(sizeof(Turtle));
     turtle_reset(turtle);
-    Turtle** backup_turtles = malloc(TURTLE_BACKUP_SIZE*sizeof(Turtle*));
-    for(int i =0; i<TURTLE_BACKUP_SIZE; i++){
+    Turtle **backup_turtles = malloc(TURTLE_BACKUP_SIZE * sizeof(Turtle *));
+    for (int i = 0; i < TURTLE_BACKUP_SIZE; i++) {
         backup_turtles[i] = malloc(sizeof(Turtle));
         turtle_reset(backup_turtles[i]);
     }
@@ -90,7 +90,7 @@ TurtlePainter * turtle_new(Uint32* pixels, int width, int height, SDL_PixelForma
 
 void turtle_delete(TurtlePainter *turtle_painter) {
     free(turtle_painter->turtle);
-    for(int i =0; i<TURTLE_BACKUP_SIZE; i++){
+    for (int i = 0; i < TURTLE_BACKUP_SIZE; i++) {
         free(turtle_painter->backup_turtles[i]);
     }
     free(turtle_painter->backup_turtles);
@@ -109,24 +109,24 @@ void turtle_reset(Turtle *turtle) {
 }
 
 void turtle_backup(TurtlePainter *turtle_painter) {
-    Turtle * backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index+1];
+    Turtle *backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index + 1];
     *(backup) = *(turtle_painter->turtle);
 
     turtle_painter->backup_turtle_index++;
 }
 
 void turtle_restore(TurtlePainter *turtle_painter) {
-    if(turtle_painter->backup_turtle_index == -1){
+    if (turtle_painter->backup_turtle_index == -1) {
         return;
     }
-    Turtle * backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index];
+    Turtle *backup = turtle_painter->backup_turtles[turtle_painter->backup_turtle_index];
     *(turtle_painter->turtle) = *(backup);
 
     turtle_painter->backup_turtle_index--;
 }
 
 void turtle_forward(TurtlePainter *turtle_painter, int pixels) {
-    Turtle* turtle = turtle_painter->turtle;
+    Turtle *turtle = turtle_painter->turtle;
     double radians = turtle->direction * PI / 180.0;
     double dx = cos(radians) * pixels;
     double dy = sin(radians) * pixels;
@@ -134,7 +134,7 @@ void turtle_forward(TurtlePainter *turtle_painter, int pixels) {
 }
 
 void turtle_turn_left(TurtlePainter *turtle_painter, double angle) {
-    Turtle * turtle= turtle_painter->turtle;
+    Turtle *turtle = turtle_painter->turtle;
     turtle->direction += angle;
     if (turtle->direction < 0.0) {
         turtle->direction += 360.0;
@@ -160,7 +160,7 @@ void turtle_goto(TurtlePainter *turtle_painter, int x, int y) {
 }
 
 void turtle_goto_real(TurtlePainter *turtle_painter, double x, double y) {
-    Turtle * turtle = turtle_painter->turtle;
+    Turtle *turtle = turtle_painter->turtle;
 
     // draw line if pen is down
     if (turtle->is_pen_down) {
@@ -182,7 +182,7 @@ void turtle_set_direction(TurtlePainter *turtle_painter, double angle) {
 }
 
 void turtle_set_pen_color(TurtlePainter *turtle_painter, int red, int green, int blue) {
-    Turtle * turtle = turtle_painter->turtle;
+    Turtle *turtle = turtle_painter->turtle;
     turtle->pen_color.red = red;
     turtle->pen_color.green = green;
     turtle->pen_color.blue = blue;

@@ -21,7 +21,7 @@ Array *array_new(unsigned int size) {
  * @param index
  * @return element at the given index
  */
-void* array_get(const Array *array, unsigned int index) {
+void *array_get(const Array *array, unsigned int index) {
     if (index >= array->size) {
         return NULL;
     }
@@ -65,6 +65,6 @@ void array_append(Array *array, void *data) {
  * Clear the array, not freeing element memories.
  * @param array
  */
-void array_clear(Array *array){
+void array_clear(Array *array) {
     array->size = 0;
 }

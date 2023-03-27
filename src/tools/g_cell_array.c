@@ -9,9 +9,9 @@
  * @param h height of the grid
  * @return the newly created array
  */
-CellArray *ca_create(int w, int h, void* (*create_state)()) {
+CellArray *ca_create(int w, int h, void *(*create_state)()) {
 
-    void **p_array =  malloc(sizeof(void *) * (w * h));
+    void **p_array = malloc(sizeof(void *) * (w * h));
 
     CellArray *p_cell_array = (CellArray *) malloc(sizeof(CellArray));
     p_cell_array->w = w;
@@ -49,7 +49,7 @@ int ca_get_index(const CellArray *ca, int x, int y) {
  * @param y
  * @return cell state at (x,y)
  */
-void* ca_get(const CellArray *ca, int x, int y) {
+void *ca_get(const CellArray *ca, int x, int y) {
     int index = ca_get_index(ca, x, y);
     return ca->array[index];
 }
@@ -61,7 +61,7 @@ void* ca_get(const CellArray *ca, int x, int y) {
  * @param y
  * @param s new state of cell
  */
-void ca_set(CellArray *ca, int x, int y, void* s) {
+void ca_set(CellArray *ca, int x, int y, void *s) {
     if (x < 0) return;
     if (x >= ca->w) return;
     if (y < 0) return;

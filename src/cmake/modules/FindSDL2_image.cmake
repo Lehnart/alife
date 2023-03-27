@@ -36,9 +36,9 @@
 # module, but with modifications to recognize OS X frameworks and
 # additional Unix paths (FreeBSD, etc).
 
-if(NOT SDL2_IMAGE_INCLUDE_DIR AND SDL2IMAGE_INCLUDE_DIR)
+if (NOT SDL2_IMAGE_INCLUDE_DIR AND SDL2IMAGE_INCLUDE_DIR)
     set(SDL2_IMAGE_INCLUDE_DIR ${SDL2IMAGE_INCLUDE_DIR} CACHE PATH "directory cache entry initialized from old variable name")
-endif()
+endif ()
 find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
         HINTS
         ENV SDL2IMAGEDIR
@@ -49,15 +49,15 @@ find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
         include/SDL2 include
         )
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(VC_LIB_PATH_SUFFIX lib/x64)
-else()
+else ()
     set(VC_LIB_PATH_SUFFIX lib/x86)
-endif()
+endif ()
 
-if(NOT SDL2_IMAGE_LIBRARY AND SDL2IMAGE_LIBRARY)
+if (NOT SDL2_IMAGE_LIBRARY AND SDL2IMAGE_LIBRARY)
     set(SDL2_IMAGE_LIBRARY ${SDL2IMAGE_LIBRARY} CACHE FILEPATH "file cache entry initialized from old variable name")
-endif()
+endif ()
 find_library(SDL2_IMAGE_LIBRARY
         NAMES SDL2_image
         HINTS
@@ -67,7 +67,7 @@ find_library(SDL2_IMAGE_LIBRARY
         PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
         )
 
-if(SDL2_IMAGE_INCLUDE_DIR AND EXISTS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h")
+if (SDL2_IMAGE_INCLUDE_DIR AND EXISTS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h")
     file(STRINGS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h" SDL2_IMAGE_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL2_IMAGE_MAJOR_VERSION[ \t]+[0-9]+$")
     file(STRINGS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h" SDL2_IMAGE_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL2_IMAGE_MINOR_VERSION[ \t]+[0-9]+$")
     file(STRINGS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h" SDL2_IMAGE_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL2_IMAGE_PATCHLEVEL[ \t]+[0-9]+$")
@@ -81,7 +81,7 @@ if(SDL2_IMAGE_INCLUDE_DIR AND EXISTS "${SDL2_IMAGE_INCLUDE_DIR}/SDL2_image.h")
     unset(SDL2_IMAGE_VERSION_MAJOR)
     unset(SDL2_IMAGE_VERSION_MINOR)
     unset(SDL2_IMAGE_VERSION_PATCH)
-endif()
+endif ()
 
 set(SDL2_IMAGE_LIBRARIES ${SDL2_IMAGE_LIBRARY})
 set(SDL2_IMAGE_INCLUDE_DIRS ${SDL2_IMAGE_INCLUDE_DIR})

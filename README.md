@@ -7,9 +7,10 @@ It is essentially cellular automata model but you could find also L-systems, art
 
 ## Compilation
 
-This code has only been tested on Ubuntu (via WSL). You will need SDL2 library in order to compile. 
+This code has only been tested on Ubuntu (via WSL). You will need SDL2 library in order to compile.
 
 You can use cmake :
+
 ```bash
 cmake -DCMAKE_BUILD_TYPE=Release /PATH/TO/alife/src
 cmake --build  /PATH/TO/BUILD/DIRECTORY -- -j 4

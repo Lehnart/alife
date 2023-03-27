@@ -4,7 +4,7 @@
 #include "../../tools/cell_array.h"
 #include "ipd_state.h"
 
-typedef struct{
+typedef struct {
     float error_proba;
     float mut_proba;
 
@@ -20,13 +20,13 @@ typedef struct{
 } IPDRule;
 
 
-typedef struct{
-    const IPDRule* pRule;
-    IPDStateCodes* pCodes;
+typedef struct {
+    const IPDRule *pRule;
+    IPDStateCodes *pCodes;
     int *p1_memory;
     int *p2_memory;
 } IPDGame;
 
-void evolve(CellArray* pCA, const IPDRule* pRule);
+void evolve(CellArray *pCA, const IPDRule *pRule);
 
 #endif //ALIFE_IPD_RULE_H

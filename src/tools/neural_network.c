@@ -32,8 +32,7 @@ NeuralNetwork *neural_network_new(const int layers[], int size) {
                 NeuronEdge *neuron_edge = malloc(sizeof(NeuronEdge));
                 neuron_edge->weight = rand_double();
                 graph_add_edge(graph, NULL, node, neuron_edge);
-            }
-            else {
+            } else {
                 Node *node = graph_add_node(graph, neuron);
                 int offset = 0;
                 for (int j = 0; j < layer_index - 1; j++) {
