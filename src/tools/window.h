@@ -20,4 +20,6 @@ bool window_handle_events(Window *window);
 
 void window_update(Window *window);
 
+void window_destroy(Window *window);
+
 #endif //ALIFE_WINDOW_H

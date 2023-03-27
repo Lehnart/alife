@@ -44,3 +44,8 @@ void window_update(Window *window) {
     window->ticks = SDL_GetTicks();
     SDL_UpdateWindowSurface(window->sdl_window);
 }
+
+void window_destroy(Window *window) {
+    SDL_DestroyWindow(window->sdl_window);
+    SDL_Quit();
+}

@@ -39,8 +39,6 @@ int main() {
         window_update(window);
     }
 
-    SDL_DestroyWindow(window->sdl_window);
-    SDL_Quit();
-
+    window_destroy(window);
     return 0;
 }
