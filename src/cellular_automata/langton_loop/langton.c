@@ -11,7 +11,6 @@
 #define FRAME_DELAY_MS 50
 
 #define CA_INITIAL_CONFIG_FILE "res/langton_array.txt"
-#define CA_RULE_SIZE 100000
 #define CA_RULE_FILE "res/langton_rule.txt"
 
 const static int R[STATE_COUNT] = {0, 192, 0, 0, 192, 192, 0, 192};
@@ -25,10 +24,10 @@ int main() {
     CellArray *ca = ca_create(W, H);
     ca_init_from_file(ca, CA_INITIAL_CONFIG_FILE);
 
-    CellArrayRule *ca_rule = ca_rule_create(CA_RULE_SIZE);
+    CellArrayRule *ca_rule = ca_rule_create(NB_FIVE);
     ca_rule_init_from_file(ca_rule, CA_RULE_FILE);
 
-    CellArrayDrawer *ca_drawer = ca_drawer_create(R, G, B);
+    CellArrayDrawer *ca_drawer = ca_drawer_create(R, G, B, 1, false);
 
     bool should_exit = false;
 
