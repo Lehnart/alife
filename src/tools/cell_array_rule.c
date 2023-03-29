@@ -55,29 +55,4 @@ void read_buffer_from_file_with_five_neighboor(int *rule_map, const char buffer[
     s += (buffer[3] - '0') * 10;
     s += (buffer[4] - '0') * 1;
     rule_map[s] = buffer[5] - '0';
-
-//    s = 0;
-//    s += (buffer[0] - '0') * 10000;
-//    s += (buffer[4] - '0') * 1000;
-//    s += (buffer[1] - '0') * 100;
-//    s += (buffer[2] - '0') * 10;
-//    s += (buffer[3] - '0') * 1;
-//    rule_map[s] = buffer[5] - '0';
-//
-//    s = 0;
-//    s += (buffer[0] - '0') * 10000;
-//    s += (buffer[3] - '0') * 1000;
-//    s += (buffer[4] - '0') * 100;
-//    s += (buffer[1] - '0') * 10;
-//    s += (buffer[2] - '0') * 1;
-//    rule_map[s] = buffer[5] - '0';
-//
-//
-//    s = 0;
-//    s += (buffer[0] - '0') * 10000;
-//    s += (buffer[2] - '0') * 1000;
-//    s += (buffer[3] - '0') * 100;
-//    s += (buffer[4] - '0') * 10;
-//    s += (buffer[1] - '0') * 1;
-//    rule_map[s] = buffer[5] - '0';
 }

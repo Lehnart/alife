@@ -5,18 +5,18 @@
 #include "../../tools/window.h"
 #include "../../tools/cell_array_drawer.h"
 
-#define W 640
-#define H 640
-#define CELL_WIDTH 5
+#define W 800
+#define H 800
+#define CELL_WIDTH 10
 #define STATE_COUNT 10
-#define FRAME_DELAY_MS 0
+#define FRAME_DELAY_MS 1
 
 #define CA_INITIAL_CONFIG_FILE "res/langton_ant_array.txt"
 #define CA_RULE_FILE "res/langton_ant_rule.txt"
 
-const static int R[STATE_COUNT] = {255, 0,  0,  0, 192,192, 192,   0, 96, 0};
-const static int G[STATE_COUNT] = {255, 0,192,  0, 0,    0, 192, 192, 96, 0};
-const static int B[STATE_COUNT] = {255, 0,  0,192, 0,  192,   0, 192, 96, 96};
+const static int R[STATE_COUNT] = {31 , 163,  0,  0, 192,192, 192,   0, 96, 0};
+const static int G[STATE_COUNT] = {8 , 130,192,  0, 0,    0, 192, 192, 96, 0};
+const static int B[STATE_COUNT] = {163 , 8,  0,192, 0,  192,   0, 192, 96, 96};
 
 int main() {
 
