@@ -1,156 +1,43 @@
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <SDL2/SDL.h>
 #include <stdbool.h>
 
 #include "../../tools/cell_array.h"
-#include "../../tools/tools.h"
+#include "../../tools/window.h"
+#include "../../tools/cell_array_drawer.h"
 
-#define W 120
-#define H 120
+#define W 720
+#define H 720
+#define CELL_WIDTH 6
 #define STATE_COUNT 6
 #define FRAME_DELAY_MS 50
 
-void evolve(CellArray *pCA, const int *rule) {
+#define CA_INITIAL_CONFIG_FILE "res/byl_array.txt"
+#define CA_RULE_FILE "res/byl_rule.txt"
 
-    int *intermediate_array = malloc(pCA->w * pCA->h * sizeof(int));
-
-    for (int y = 0; y < pCA->h; y++) {
-        for (int x = 0; x < pCA->w; x++) {
-            CellNeighborhood cn = ca_get_neighborhood(pCA, x, y);
-            int s = 0;
-            s += cn.m * 10000;
-            s += cn.t * 1000;
-            s += cn.r * 100;
-            s += cn.b * 10;
-            s += cn.l * 1;
-
-            intermediate_array[x + (pCA->w * y)] = rule[s];
-        }
-    }
-
-    for (int y = 0; y < pCA->h; y++) {
-        for (int x = 0; x < pCA->w; x++) {
-            pCA->array[x + (pCA->w * y)] = intermediate_array[x + (pCA->w * y)];
-        }
-    }
-    free(intermediate_array);
-}
-
+const static int R[STATE_COUNT] = {0, 192, 0, 0, 192, 192};
+const static int G[STATE_COUNT] = {0, 0, 192, 0, 0, 192};
+const static int B[STATE_COUNT] = {0, 0, 0, 192, 192, 0};
 
 int main() {
 
-    SDL_Window *p_window = create_window("Byl", W, H);
-    SDL_Surface *p_surf = SDL_GetWindowSurface(p_window);
+    Window *window = window_create("Byl", W, H, FRAME_DELAY_MS);
 
-    if (p_window == NULL) { return 1; }
+    CellArray *ca = ca_create(W/CELL_WIDTH, H/CELL_WIDTH);
+    ca_init_from_file(ca, CA_INITIAL_CONFIG_FILE);
 
-    CellArray *ca = ca_create(W, H);
-    FILE *array_file = fopen("res/byl_array.txt", "R");
-    int index = 0;
-    int c;
-    c = fgetc(array_file);
-    while (c != '\0' && c != -1) {
+    CellArrayRule *ca_rule = ca_rule_create(NB_FIVE);
+    ca_rule_init_from_file(ca_rule, CA_RULE_FILE);
 
-        if (c >= '0' && c <= '9') {
-            ca->array[index] = (c - '0');
-            index++;
-        }
-        c = fgetc(array_file);
-    }
-    fclose(array_file);
+    CellArrayDrawer *ca_drawer = ca_drawer_create(R, G, B, CELL_WIDTH, true);
 
-    int r[STATE_COUNT] = {0, 192, 0, 0, 192, 192};
-    int g[STATE_COUNT] = {0, 0, 192, 0, 0, 192};
-    int b[STATE_COUNT] = {0, 0, 0, 192, 192, 0};
+    bool should_exit = false;
 
-    int rule[100000] = {0};
-    FILE *file = fopen("res/byl_rule.txt", "R");
-
-    char buffer[10] = {0};
-    fgets(buffer, 10, file);
-
-    while (buffer[0] >= '0' && buffer[0] <= '9') {
-        int s = 0;
-        s += (buffer[0] - '0') * 10000;
-        s += (buffer[1] - '0') * 1000;
-        s += (buffer[2] - '0') * 100;
-        s += (buffer[3] - '0') * 10;
-        s += (buffer[4] - '0') * 1;
-        rule[s] = buffer[5] - '0';
-
-        s = 0;
-        s += (buffer[0] - '0') * 10000;
-        s += (buffer[4] - '0') * 1000;
-        s += (buffer[1] - '0') * 100;
-        s += (buffer[2] - '0') * 10;
-        s += (buffer[3] - '0') * 1;
-        rule[s] = buffer[5] - '0';
-
-        s = 0;
-        s += (buffer[0] - '0') * 10000;
-        s += (buffer[3] - '0') * 1000;
-        s += (buffer[4] - '0') * 100;
-        s += (buffer[1] - '0') * 10;
-        s += (buffer[2] - '0') * 1;
-        rule[s] = buffer[5] - '0';
-
-
-        s = 0;
-        s += (buffer[0] - '0') * 10000;
-        s += (buffer[2] - '0') * 1000;
-        s += (buffer[3] - '0') * 100;
-        s += (buffer[4] - '0') * 10;
-        s += (buffer[1] - '0') * 1;
-        rule[s] = buffer[5] - '0';
-
-        printf("buffer %s \n", buffer);
-        printf("s = %i, rule[s] = %i\n", s, rule[s]);
-
-        buffer[0] = '\0';
-        fgets(buffer, 10, file);
-    }
-    fclose(file);
-
-    Uint32 ticks = SDL_GetTicks();
-    int is_over = 1;
-
-    while (is_over) {
-
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            SDL_PollEvent(&e);
-            if (e.type == SDL_QUIT) {
-                is_over = 0;
-            }
-        }
-
-        Uint32 *pixels;
-        int i, j;
-
-        SDL_LockSurface(p_surf);
-        pixels = (Uint32 *) p_surf->pixels;
-        for (i = 0; i < W; i++) {
-            for (j = 0; j < H; j++) {
-                int s = ca_get(ca, i, j);
-                pixels[i + (j * W)] = SDL_MapRGBA(p_surf->format, r[s], g[s], b[s], 255);
-            }
-        }
-        SDL_UnlockSurface(p_surf);
-        SDL_UpdateWindowSurface(p_window);
-        Uint32 delay = (SDL_GetTicks() - ticks);
-        if (delay < FRAME_DELAY_MS) {
-            SDL_Delay(FRAME_DELAY_MS - delay);
-        }
-        ticks = SDL_GetTicks();
-
-        evolve(ca, rule);
+    while (!should_exit) {
+        should_exit = window_handle_events(window);
+        ca_evolve(ca, ca_rule);
+        ca_drawer_draw(ca_drawer, ca, window);
+        window_update(window);
     }
 
-    SDL_DestroyWindow(p_window);
-    SDL_Quit();
-
+    window_destroy(window);
     return 0;
 }
