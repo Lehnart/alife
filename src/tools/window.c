@@ -16,6 +16,8 @@ Window *window_create(const char *title, const int w, const int h, const int fra
         exit(1);
     }
 
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+
     SDL_Surface *sdl_surf = SDL_GetWindowSurface(sdl_window);
 
     Window init_window = {w, h, frame_delay_ms, 0, sdl_window, sdl_surf};

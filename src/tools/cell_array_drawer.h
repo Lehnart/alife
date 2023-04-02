@@ -15,6 +15,6 @@ typedef struct {
 
 CellArrayDrawer *ca_drawer_create(const int *r, const int *g, const int *b, const int cell_width, bool is_grid_shown);
 
-CellArrayDrawer *ca_drawer_draw(CellArrayDrawer *ca_drawer, CellArray *ca, Window *window);
+void ca_drawer_draw(CellArrayDrawer *ca_drawer, CellArray *ca, Window *window);
 
 #endif //ALIFE_CELL_ARRAY_DRAWER_H

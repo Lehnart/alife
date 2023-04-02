@@ -13,7 +13,7 @@ CellArrayDrawer *ca_drawer_create(const int *r, const int *g, const int *b, cons
     return ca_drawer;
 }
 
-CellArrayDrawer *ca_drawer_draw(CellArrayDrawer *ca_drawer, CellArray *ca, Window *window) {
+void ca_drawer_draw(CellArrayDrawer *ca_drawer, CellArray *ca, Window *window) {
     SDL_LockSurface(window->sdl_surface);
     for (int i = 0; i < ca->w; i++) {
         for (int j = 0; j < ca->h; j++) {

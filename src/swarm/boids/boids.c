@@ -4,24 +4,20 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <sys/time.h>
 
-#define W 1280
-#define H 720
+#define W 800
+#define H 800
 
-#define BIRD_COUNT 250
+#define BIRD_COUNT 200
 
-#define FRAME_DELAY_MS 0
+#define FRAME_DELAY_MS 10
 
 
 int main() {
 
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    unsigned long time = 1000000 * tv.tv_sec + tv.tv_usec;
-    rand_seed(time, time + 1, time + 2);
+    init_random();
 
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
     SDL_Window *p_window = create_window("BOIDS", W, H);
-    SDL_Surface *p_surf = SDL_GetWindowSurface(p_window);
     SDL_Renderer *p_renderer = SDL_CreateRenderer(p_window, -1, SDL_RENDERER_ACCELERATED);
 
     Bird *birds[BIRD_COUNT];
@@ -68,7 +64,7 @@ int main() {
 //            circleRGBA	(p_renderer, (short)t.x1, (short)t.y1, BIRD_COHESION_RADIUS, 0, 0, 255, 255);
 
 
-            bird_update(bird, 0.01F, -BIRD_TRIANGLE_HEIGHT, -BIRD_TRIANGLE_HEIGHT, W + BIRD_TRIANGLE_HEIGHT, H + BIRD_TRIANGLE_HEIGHT);
+            bird_update(bird, FRAME_DELAY_MS/1000., -BIRD_TRIANGLE_HEIGHT, -BIRD_TRIANGLE_HEIGHT, W + BIRD_TRIANGLE_HEIGHT, H + BIRD_TRIANGLE_HEIGHT);
         }
 
         SDL_RenderPresent(p_renderer);
