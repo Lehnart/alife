@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(alife C)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}//cmake/modules)
 message(STATUS "module path ${CMAKE_MODULE_PATH}")
 
 find_package(SDL2 REQUIRED SDL2)
