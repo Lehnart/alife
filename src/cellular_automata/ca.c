@@ -16,10 +16,10 @@ int main() {
     CellArrayDrawer *ca_drawer = ca_drawer_create(R, G, B, CELL_WIDTH, true);
 #endif
 #ifndef GUI
-    CellArrayTermDrawer* ca_drawer = ca_term_drawer_create(pairs, chars,STATE_COUNT);
+    CellArrayTermDrawer *ca_drawer = ca_term_drawer_create(pairs, chars, STATE_COUNT);
 #endif
 
-    CellArray *ca = ca_create(W/CELL_WIDTH, H/CELL_WIDTH);
+    CellArray *ca = ca_create(W / CELL_WIDTH, H / CELL_WIDTH);
     ca_init_from_file(ca, CA_INITIAL_CONFIG_FILE);
 
     CellArrayRule *ca_rule = ca_rule_create(NB_FIVE);
@@ -27,7 +27,6 @@ int main() {
 
     bool should_exit = false;
     while (!should_exit) {
-        ca_evolve(ca, ca_rule);
 
 #ifndef GUI
         ca_term_drawer_draw(ca_drawer, ca);
@@ -39,6 +38,7 @@ int main() {
         ca_drawer_draw(ca_drawer, ca, window);
         window_update(window);
 #endif
+        ca_evolve(ca, ca_rule);
     }
 
 #ifdef GUI

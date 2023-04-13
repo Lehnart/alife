@@ -7,7 +7,7 @@
 //#define H 720
 //#define CELL_WIDTH 6
 //#define STATE_COUNT 8
-//#define FRAME_DELAY_MS 50
+//#define FRAME_DELAY_MS 1000
 //#define CA_INITIAL_CONFIG_FILE "res/langton_array.txt"
 //#define CA_RULE_FILE "res/langton_rule.txt"
 //const static int R[STATE_COUNT] = {0, 192, 0, 0, 192, 192, 0, 192};
@@ -58,19 +58,56 @@
 // Byl loop config terminal
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define W 720
-#define H 720
-#define CELL_WIDTH 6
+//#define W 720
+//#define H 720
+//#define CELL_WIDTH 6
+//#define STATE_COUNT 6
+//#define FRAME_DELAY_MS 50
+//const static char chars [STATE_COUNT]= {'#','-','#','x','o','/'};
+//const static Pair pairs [STATE_COUNT]= {
+//        {1,COLOR_BLACK, COLOR_BLACK},
+//        {2,COLOR_RED, COLOR_BLACK},
+//        {3,COLOR_GREEN, COLOR_BLACK},
+//        {4,COLOR_BLUE, COLOR_BLACK},
+//        {5,COLOR_MAGENTA, COLOR_BLACK},
+//        {6,COLOR_YELLOW, COLOR_BLACK},
+//};
+//#define CA_INITIAL_CONFIG_FILE "res/byl_array.txt"
+//#define CA_RULE_FILE "res/byl_rule.txt"
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Reggia loop config GUI
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define W 1000
+#define H 800
+#define CELL_WIDTH 20
 #define STATE_COUNT 6
-#define FRAME_DELAY_MS 50
-const static char chars [STATE_COUNT]= {'#','-','#','x','o','/'};
-const static Pair pairs [STATE_COUNT]= {
-        {1,COLOR_BLACK, COLOR_BLACK},
-        {2,COLOR_RED, COLOR_BLACK},
-        {3,COLOR_GREEN, COLOR_BLACK},
-        {4,COLOR_BLUE, COLOR_BLACK},
-        {5,COLOR_MAGENTA, COLOR_BLACK},
-        {6,COLOR_YELLOW, COLOR_BLACK},
-};
-#define CA_INITIAL_CONFIG_FILE "res/byl_array.txt"
-#define CA_RULE_FILE "res/byl_rule.txt"
+#define FRAME_DELAY_MS 100
+const static int R[STATE_COUNT] = {0, 192, 0, 0, 192, 192};
+const static int G[STATE_COUNT] = {0, 0, 192, 0, 0, 192};
+const static int B[STATE_COUNT] = {0, 0, 0, 192, 192, 0};
+#define CA_INITIAL_CONFIG_FILE "res/reggia_array.txt"
+#define CA_RULE_FILE "res/reggia_rule.txt"
+#define GUI
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Reggia loop config terminal
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//#define W 1000
+//#define H 800
+//#define CELL_WIDTH 20
+//#define STATE_COUNT 6
+//const static char chars [STATE_COUNT]= {'#','L', 'o','+','X','x', };
+//const static Pair pairs [STATE_COUNT]= {
+//        {1,COLOR_BLACK, COLOR_BLACK},
+//        {2,COLOR_YELLOW, COLOR_BLACK},
+//        {3,COLOR_WHITE, COLOR_BLACK},
+//        {4,COLOR_RED, COLOR_BLACK},
+//        {5,COLOR_BLUE, COLOR_BLACK},
+//        {6,COLOR_BLUE, COLOR_BLACK},
+//};
+//#define CA_INITIAL_CONFIG_FILE "res/reggia_array.txt"
+//#define CA_RULE_FILE "res/reggia_rule.txt"
