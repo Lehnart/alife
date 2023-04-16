@@ -12,7 +12,7 @@
 int main() {
 
 #ifdef GUI
-    Window *window = window_create("Langton", W, H, FRAME_DELAY_MS);
+    Window *window = window_create("Cellular automata", W, H, FRAME_DELAY_MS);
     CellArrayDrawer *ca_drawer = ca_drawer_create(R, G, B, CELL_WIDTH, true);
 #endif
 #ifndef GUI

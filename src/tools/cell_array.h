@@ -53,4 +53,6 @@ void ca_set(CellArray *ca, int x, int y, int s);
 
 void ca_evolve(CellArray *ca, CellArrayRule *ca_rule);
 
+void ca_custom_evolve(CellArray *ca, int (*custom_rule)(CellNeighborhood));
+
 #endif //ALIFE_CELL_ARRAY_H

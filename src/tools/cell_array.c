@@ -69,11 +69,13 @@ void ca_init_from_file(CellArray *ca, char *filename) {
 CellArray *random_cell_array(int w, int h, const int *states, const double *cumulative_prob) {
 
     int *p_array = (int *) malloc(sizeof(int) * (w * h));
+    int *temp_array = (int *) malloc(sizeof(int) * (w * h));
 
     CellArray *p_cell_array = (CellArray *) malloc(sizeof(CellArray));
     p_cell_array->w = w;
     p_cell_array->h = h;
     p_cell_array->array = p_array;
+    p_cell_array->temp_array = temp_array;
 
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
@@ -139,7 +141,7 @@ void ca_set(CellArray *ca, int x, int y, int s) {
  * @param y
  * @return Neighborhood of 8 cells around (x,y)
  */
-CellNeighborhood ca_get_neighborhood(const CellArray *ca, int x, int y) {
+CellNeighborhood  ca_get_neighborhood(const CellArray *ca, int x, int y) {
     CellNeighborhood cn;
     cn.m = ca_get(ca, x, y);
     cn.t = ca_get(ca, x, y - 1);
@@ -175,3 +177,20 @@ void ca_evolve(CellArray *ca, CellArrayRule *ca_rule) {
         }
     }
 }
+
+
+void ca_custom_evolve(CellArray *ca, int (*custom_rule)(CellNeighborhood)) {
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            CellNeighborhood cn = ca_get_neighborhood(ca, x, y);
+            ca->temp_array[x + (ca->w * y)] = custom_rule(cn);
+        }
+    }
+
+    for (int y = 0; y < ca->h; y++) {
+        for (int x = 0; x < ca->w; x++) {
+            ca->array[x + (ca->w * y)] = ca->temp_array[x + (ca->w * y)];
+        }
+    }
+}
+
